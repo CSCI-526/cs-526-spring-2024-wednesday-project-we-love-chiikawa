@@ -52,47 +52,10 @@ public class ObjectGenerator : MonoBehaviour
     }
     void ExtendRoad(GameObject Road1)
     {
-        /*// 在物体 B 的增长方向上发射射线。
-        RaycastHit hit;
-        if (Physics.Raycast(Road1.transform.position, Road1.transform.right, out hit))
-        {
-            // 如果射线检测到碰撞，停止增长并设置物体 B 的长度。
-            float distance = hit.distance;
-            if (distance < RHeight)
-            {
-                Road1.transform.localScale = new Vector3(RWidth, distance, RWidth);
-                roadCollider.size = new Vector2(RWidth, distance); // 更新碰撞器大小
-                this.enabled = false; // 停止进一步的 Update 调用。
-            }
-        }
-        else
-        {
-            // 如果没有检测到碰撞，继续增加物体 B 的长度。
-            Road1.transform.localScale += new Vector3(0, growSpeed * Time.deltaTime, 0);
-            Road1.transform.position += -Road1.transform.up * (growSpeed * Time.deltaTime * 0.5f); // 更新位置以保持底部位置不变。
-        }*/
-        RaycastHit2D hit = Physics2D.Raycast(Road1.transform.position, Road1.transform.right, RHeight);
-        if (hit.collider != null)
-        {
-            // If the raycast hits something, stop growing and adjust the road's length
-            float distance = hit.distance;
-            if (distance < RHeight)
-            {
-                roadCollider.size = new Vector2(distance, RWidth); // Update collider size
-                this.enabled = false; // Stop further updates
-            }
-        }
-        else
-        {
-            // If no collision, continue to extend the road
-            var currentSize = roadCollider.size;
-            roadCollider.size = new Vector2(currentSize.x + (growSpeed * Time.deltaTime), RWidth);
-            // Adjust position to keep the base in place
-            Road1.transform.position += Road1.transform.right * (growSpeed * Time.deltaTime * 0.5f);
-        }
+        
     }
     void Update()
     {
-        //ExtendRoad(Road1);
+        ExtendRoad(Road1);
     }
 }
