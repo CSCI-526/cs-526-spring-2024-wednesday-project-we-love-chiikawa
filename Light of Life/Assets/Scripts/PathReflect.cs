@@ -30,7 +30,7 @@ public class ObjectGenerator : MonoBehaviour
     }
     void CreateRoad()
     {
-        //Adjust the size of the road
+        //Road scale
         Road1.transform.localScale = new Vector2(RWidth, RHeight);
         // 设置碰撞器的大小
         roadCollider.size = new Vector2(RWidth, RHeight);

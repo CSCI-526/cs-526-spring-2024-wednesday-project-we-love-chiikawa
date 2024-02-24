@@ -65,7 +65,7 @@ public class DynamicRectangle : MonoBehaviour
 
         //更新collider尺寸
         roadCollider.size = new Vector2(distance, 0.05f);
-        roadCollider.offset = new Vector2(0, 0); // 根据Road1的伸展方向调整偏移量
+        roadCollider.offset = new Vector2(0, 0); 
 
     }
     void OnCollisionEnter2D(Collision2D collision)
