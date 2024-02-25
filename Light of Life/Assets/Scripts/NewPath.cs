@@ -108,6 +108,7 @@ public class DynamicRectangle : MonoBehaviour
             //记录碰撞点
             Vector2 hitPoint = hit.point;
 
+            //介质检测和hp的传输从这里开始
             // 生成反射光线
             ////函数还未完成，而且下面的Road1_1应该是NewRoad！！！CreateNewRoad(NewRoad,hitPoint,ObstacleType,)
             Road1_1 = Instantiate(Road);
