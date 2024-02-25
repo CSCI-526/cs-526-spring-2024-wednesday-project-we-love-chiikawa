@@ -30,11 +30,11 @@ public class DynamicRectangle : MonoBehaviour
         Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
 
         //左边的路
-        Road1 = new GameObject("Road2");
+        Road2 = new GameObject("Road2");
         InitializeRoad(Road2, 2);
         BoxCollider2D Road2collider = Road1.AddComponent<BoxCollider2D>();
-        Road2collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
-
+        Road2collider.size = new Vector2(1, 0.05f); 
+        
         //中间的路（不需要collider）
 
     }
@@ -47,7 +47,11 @@ public class DynamicRectangle : MonoBehaviour
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.red;
-        roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
+        //让道路渲染在障碍物的上面，不会被挡住
+        roadRenderer.sortingOrder = 1; 
+        //初始化路径大小
+        Road.transform.localScale = new Vector2(5.0f, 0.05f);
+        
 
         // 初始化Road位置和旋转角度
         Road.transform.position = FlashLight.position;
@@ -70,19 +74,6 @@ public class DynamicRectangle : MonoBehaviour
     {
         //UpdateRoad(Road1,Road1_1);
 
-        /*
-        //如果右边的路撞了
-        if(isColliding = true)
-        {
-            switch(ObstacleType)
-            {
-               //障碍物为金属
-                case 1: 
-                    CreateNewRoad(Road1, Road1_1, 1, 1);
-                    break;
-            }
-                
-        }*/
     }
 
     void UpdateRoad(GameObject Road, GameObject NewRoad)
