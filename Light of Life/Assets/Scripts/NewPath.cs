@@ -13,42 +13,63 @@ public class DynamicRectangle : MonoBehaviour
     public Transform FlashLight; // 物体A的Transform
     private GameObject Road1; // 物体B
     private GameObject Road1_1;
+    private GameObject Road2; // 物体B
+    private GameObject Road2_1;
     public SpriteRenderer roadRenderer;
     private bool isColliding = false;//if is colliding, road stop growing
     private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
-    private int ObstacleType; //障碍物类型
+    private int ObstacleType=0; //障碍物类型
 
 
     void Start()
     {
+        //右边的路
         Road1 = new GameObject("Road1");
-        InitializeRoad1(Road1,1);
+        InitializeRoad(Road1,1);
+        BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
+        Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
+
+        //左边的路
+        Road1 = new GameObject("Road2");
+        InitializeRoad(Road2, 2);
+        BoxCollider2D Road2collider = Road1.AddComponent<BoxCollider2D>();
+        Road2collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
+
+        //中间的路（不需要collider）
+
     }
 
-    void InitializeRoad1(GameObject Road, int dir)
+    void InitializeRoad(GameObject Road, int dir)
     {
-        // 创建Road，并添加SpriteRenderer组件
+        // 创建Road，并添加Collider和组件
+        
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.red;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
+
         // 初始化Road位置和旋转角度
         Road.transform.position = FlashLight.position;
         //if the road is on right/down side, adjust position to right/down
-        if (dir==1){
-            Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
+        switch (dir)
+        {
+            case 1:
+                Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
+                break;
+            case 2:
+                Road.transform.position += FlashLight.up * 0.5f;
+                break;
         }
-        else{
-            Road.transform.position += FlashLight.up * 0.5f;
-        }
+            
         Road.transform.up = FlashLight.up;
     }
 
 
     void Update()
     {
-        UpdateRoad(Road1,Road1_1);
+        //UpdateRoad(Road1,Road1_1);
+
         /*
         //如果右边的路撞了
         if(isColliding = true)
@@ -91,10 +112,15 @@ public class DynamicRectangle : MonoBehaviour
             Road.transform.position -= FlashLight.up * 0.5f;
             //更新Road的尺寸
             Road.transform.localScale = new Vector2(distance, 0.05f);
-            lastSafeDistance = distance; // 更新上次安全距离
+            // 更新上次安全距离
+            lastSafeDistance = distance;
+            //更新碰撞器大小
+            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+            Roadcollider.size = new Vector2(distance, 0.05f);
+            //Roadcollider.offset = new Vector2(distance / 2, 0);
         }
 
-        
+
         //检测碰撞
         RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
 
@@ -102,27 +128,33 @@ public class DynamicRectangle : MonoBehaviour
         if (hit.collider != null && !isColliding)
         {
             isColliding = true;
-            if (hit.collider.gameObject.name.ToLower().Contains("Metal"))
-                //记录障碍物类型
+            if (hit.collider.gameObject.name.ToLower().Contains("metal"))
+            //记录障碍物类型
+            {
                 ObstacleType = 1;
+            }
             //记录碰撞点
             Vector2 hitPoint = hit.point;
-
-            //介质检测和hp的传输从这里开始
-            // 生成反射光线
-            ////函数还未完成，而且下面的Road1_1应该是NewRoad！！！CreateNewRoad(NewRoad,hitPoint,ObstacleType,)
-            Road1_1 = Instantiate(Road);
-            //设置长度为5.0f
-            Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
-            //position大致为撞击点
-            Road1_1.transform.position = hitPoint;
-            float roadRotation = Road.transform.eulerAngles.z;
-            Debug.Log(Road.transform.eulerAngles.z);
-            // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
-            Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
-            Debug.Log(Road1_1.transform.eulerAngles.z);
-            Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
-            Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+            if(ObstacleType == 1)
+            {
+          
+                //介质检测和hp的传输从这里开始
+                // 生成反射光线
+                ////函数还未完成，而且下面的Road1_1应该是NewRoad！！！CreateNewRoad(NewRoad,hitPoint,ObstacleType,)
+                Road1_1 = Instantiate(Road);
+                //设置长度为5.0f
+                Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
+                //position大致为撞击点
+                Road1_1.transform.position = hitPoint;
+                float roadRotation = Road.transform.eulerAngles.z;
+                Debug.Log(Road.transform.eulerAngles.z);
+                // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
+                Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
+                Debug.Log(Road1_1.transform.eulerAngles.z);
+                Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
+                Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+            }
+            ObstacleType = 0;
 
         }
         // 如果没有碰撞，重置isColliding
