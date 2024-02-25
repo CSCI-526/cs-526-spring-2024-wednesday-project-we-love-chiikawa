@@ -10,16 +10,16 @@ public class DynamicRectangle : MonoBehaviour
      * 而 GameObject 则是游戏对象的类，代表了场景中的实体，它可以具有多个组件，其中一个就是 Transform。
         因此，当你声明 FlashLight 为 public Transform 时，它实际上是指向了一个游戏对象的位置、旋转和比例等信息，而不是游戏对象本身。
      * */
-    public Transform FlashLight; // 物体A的Transform
-    private GameObject Road1; // 物体B
+    public Transform FlashLight; 
+    private GameObject Road1; // Right Road
     private GameObject Road1_1;
-    private GameObject Road2; // 物体B
+    private GameObject Road2; // Left Road
     private GameObject Road2_1;
     public SpriteRenderer roadRenderer;
     private bool isColliding = false;//if is colliding, road stop growing
     private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
     private int ObstacleType=0; //障碍物类型
-
+    bool fixedRoads = false; //If press 'F', fix roads
 
     void Start()
     {
@@ -28,18 +28,19 @@ public class DynamicRectangle : MonoBehaviour
         InitializeRoad(Road1,1);
         BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
         Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
-
+        
         //左边的路
+        /*
         Road2 = new GameObject("Road2");
         InitializeRoad(Road2, 2);
         BoxCollider2D Road2collider = Road1.AddComponent<BoxCollider2D>();
         Road2collider.size = new Vector2(1, 0.05f); 
-        
+        */
         //中间的路（不需要collider）
 
     }
 
-    void InitializeRoad(GameObject Road, int dir)
+    void InitializeRoad(GameObject Road, int side)
     {
         // 创建Road，并添加Collider和组件
         
@@ -56,7 +57,7 @@ public class DynamicRectangle : MonoBehaviour
         // 初始化Road位置和旋转角度
         Road.transform.position = FlashLight.position;
         //if the road is on right/down side, adjust position to right/down
-        switch (dir)
+        switch (side)
         {
             case 1:
                 Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
@@ -72,7 +73,16 @@ public class DynamicRectangle : MonoBehaviour
 
     void Update()
     {
-        //UpdateRoad(Road1,Road1_1);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            fixedRoads = !fixedRoads; // 按下F键切换Road和Road1_1的固定状态
+        }
+
+        if (!fixedRoads) // 只有当Roads未被固定时，才更新它们的位置和大小
+        {
+            UpdateRoad(Road1, Road1_1);
+            
+        }
 
     }
 
@@ -126,6 +136,7 @@ public class DynamicRectangle : MonoBehaviour
             }
             //记录碰撞点
             Vector2 hitPoint = hit.point;
+            
             if(ObstacleType == 1)
             {
           
@@ -144,6 +155,14 @@ public class DynamicRectangle : MonoBehaviour
                 Debug.Log(Road1_1.transform.eulerAngles.z);
                 Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
                 Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+
+                Test(Road1, hitPoint, 1);
+                var result = Test(gameObject, new Vector2(1f, 2f), 3);
+
+                // 输出返回值的各个组成部分
+                Debug.Log("NRoad: " + result.Item1);
+                Debug.Log("Hitpoint: " + result.Item2);
+                Debug.Log("Otype: " + result.Item3);
             }
             ObstacleType = 0;
 
@@ -155,6 +174,11 @@ public class DynamicRectangle : MonoBehaviour
             Destroy(Road1_1);
             isColliding = false;
         }
+    }
+
+    (GameObject,  Vector2,int) Test(GameObject NRoad, Vector2 Hitpoint, int Otype)
+    {
+        return (NRoad, Hitpoint, Otype);
     }
     void CreateNewRoad(GameObject NRoad, Vector2 Hitpoint, int Otype, int Rtype)
     {
