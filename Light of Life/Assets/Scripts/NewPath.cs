@@ -10,7 +10,7 @@ public class DynamicRectangle : MonoBehaviour
     private GameObject Road1; // 物体B
     private SpriteRenderer roadRenderer;
     private bool isColliding = false;//if is colliding, road stop growing
-    private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离
+    private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
 
     void Start()
     {
@@ -52,7 +52,8 @@ public class DynamicRectangle : MonoBehaviour
         // 计算FM在Fu上的投影的大小
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
 
-        // 如果未发生碰撞，或者distance小于上次安全距离（即Road在缩短），则更新Road
+        // 如果未发生碰撞，或者！distance小于上次安全距离（即Road在缩短），则更新Road
+        //也就是说，如果碰撞了（先lasteDis=手电筒到障碍物的位置，然后isColliding=1），但是在下一帧鼠标收回（distance更新，并小于LastDis）就可以继续更新Road的长度
         if (!isColliding || distance < lastSafeDistance)
         {
             //计算投影点N的坐标
@@ -72,6 +73,7 @@ public class DynamicRectangle : MonoBehaviour
         if (hit.collider != null && !isColliding)
             {
               isColliding = true;
+              //即使变量变成true了，只要鼠标收回到碰不到的位置，update函数就可以继续改变长度
               Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
             }
         else if(hit.collider == null)
