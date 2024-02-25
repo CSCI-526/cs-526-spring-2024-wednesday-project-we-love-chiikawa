@@ -10,6 +10,7 @@ public class DynamicRectangle : MonoBehaviour
     private GameObject Road1; // 物体B
     private SpriteRenderer roadRenderer;
     private bool isColliding = false;//if is colliding, road stop growing
+    private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离
 
     void Start()
     {
@@ -38,8 +39,7 @@ public class DynamicRectangle : MonoBehaviour
     }
     void Update()
     {
-        if(!isColliding)
-        { 
+        
         //获取鼠标位置 计算Road的位置和长度
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Flashlight右面的法向量，并计算单位向量
@@ -51,24 +51,32 @@ public class DynamicRectangle : MonoBehaviour
         Vector2 FM = flashlightPosition - mousePosition;
         // 计算FM在Fu上的投影的大小
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
-        //计算投影点N的坐标
-        Vector2 N = flashlightPosition + FR_normalized * distance;
-        Vector2 midPoint = (N + flashlightPosition) / 2f;
-        //更新Road的中心点坐标
-        Road1.transform.position = new Vector2(midPoint.x, midPoint.y);
-        Road1.transform.position -= FlashLight.up * 0.5f;
-        //更新Road的尺寸
-        Road1.transform.localScale = new Vector2(distance, 0.05f);
 
+        // 如果未发生碰撞，或者distance小于上次安全距离（即Road在缩短），则更新Road
+        if (!isColliding || distance < lastSafeDistance)
+        {
+            //计算投影点N的坐标
+            Vector2 N = flashlightPosition + FR_normalized * distance;
+            Vector2 midPoint = (N + flashlightPosition) / 2f;
+
+            //更新Road的中心点坐标
+            Road1.transform.position = new Vector2(midPoint.x, midPoint.y);
+            Road1.transform.position -= FlashLight.up * 0.5f;
+            //更新Road的尺寸
+            Road1.transform.localScale = new Vector2(distance, 0.05f);
+            lastSafeDistance = distance; // 更新上次安全距离
+        }
 
         //检测碰撞
         RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
-        if (hit.collider != null)
+        if (hit.collider != null && !isColliding)
             {
               isColliding = true;
               Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
             }
-        }
+        else if(hit.collider == null)
+            isColliding = false; // 如果没有碰撞，重置isColliding
     }
+    
 }
 
