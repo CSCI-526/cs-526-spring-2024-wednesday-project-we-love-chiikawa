@@ -8,42 +8,39 @@ public class DynamicRectangle : MonoBehaviour
      * */
     public Transform FlashLight; // 物体A的Transform
     private GameObject Road1; // 物体B
-    private BoxCollider2D roadCollider;
     private SpriteRenderer roadRenderer;
+    private bool isColliding = false;//if is colliding, road stop growing
+
     void Start()
     {
         Road1 = new GameObject("Road1");
         InitializeRoad1(Road1,1);
-
     }
     void InitializeRoad1(GameObject Road, int dir)
     {
-        // 创建Road，并添加BoxCollider2D和SpriteRenderer
-        roadCollider = Road.AddComponent<BoxCollider2D>();
+        // 创建Road，并添加SpriteRenderer
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.red;
 
-        // 初始化Road位置、旋转角度和尺寸
+        // 初始化Road位置和旋转角度
         Road.transform.position = FlashLight.position;
-        if(dir==1)//if the road is on right/down side, adjust position to right/down
-        {
+        //if the road is on right/down side, adjust position to right/down
+        if (dir==1){
             Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
         }
-        else
-        {
+        else{
             Road.transform.position += FlashLight.up * 0.5f;
         }
         Road.transform.up = FlashLight.up;
-        roadCollider.size = new Vector2(0, 0.05f);
 
-        int roadLayerIndex = Road1.layer;
-        string roadLayerName = LayerMask.LayerToName(roadLayerIndex);
-        Debug.Log("Road layer: " + roadLayerName);
     }
     void Update()
     {
+        if(!isColliding)
+        { 
+        //获取鼠标位置 计算Road的位置和长度
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Flashlight右面的法向量，并计算单位向量
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
@@ -63,15 +60,15 @@ public class DynamicRectangle : MonoBehaviour
         //更新Road的尺寸
         Road1.transform.localScale = new Vector2(distance, 0.05f);
 
-        //更新collider尺寸
-        roadCollider.size = new Vector2(distance, 0.05f);
-        roadCollider.offset = new Vector2(0, 0); 
 
-    }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-        Debug.Log("Collided with: " + collision.gameObject.name);
+        //检测碰撞
+        RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
+        if (hit.collider != null)
+            {
+              isColliding = true;
+              Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
+            }
+        }
     }
 }
 
