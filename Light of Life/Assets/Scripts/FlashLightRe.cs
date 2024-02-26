@@ -1,13 +1,6 @@
 using UnityEngine;
 
-using System.Runtime.CompilerServices;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
-using UnityEngine;
-using System.Net;
-
-public class DynamicRectangle : MonoBehaviour
+public class FlashLightRe : MonoBehaviour
 {
     /*
     * 每个游戏对象都有一个 Transform 组件，它负责保存和管理游戏对象的空间属性。
@@ -15,6 +8,8 @@ public class DynamicRectangle : MonoBehaviour
        因此，当你声明 FlashLight 为 public Transform 时，它实际上是指向了一个游戏对象的位置、旋转和比例等信息，而不是游戏对象本身。
     * */
     public Transform FlashLight;
+    [HideInInspector]
+    public int batteryLevel = 5;
     private GameObject Road1;
     private GameObject Road1_1;
     private GameObject Road2;
@@ -26,7 +21,8 @@ public class DynamicRectangle : MonoBehaviour
     private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
     private int ObstacleType = 0; //障碍物类型
     private int CollidedRoad = 0;
-    bool fixedRoads = false;
+    [HideInInspector]
+    public bool fixedRoads = false;
 
     void Start()
     {
@@ -71,9 +67,15 @@ public class DynamicRectangle : MonoBehaviour
     void Update()
     {
         //按F键切换是否固定道路
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && batteryLevel > 0)
         {
             fixedRoads = !fixedRoads;
+
+            if (fixedRoads == true)
+            {
+                batteryLevel--;
+                Debug.Log("Current battery level: " + batteryLevel);
+            }
         }
 
         if (!fixedRoads)
