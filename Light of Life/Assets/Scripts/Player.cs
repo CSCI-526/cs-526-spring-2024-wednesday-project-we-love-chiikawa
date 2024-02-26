@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     void CheckGrounded()
     {
         isGrounded = myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"));
-        isOnRoad = myFeet.IsTouchingLayers(LayerMask.GetMask("Road"));
+        isOnRoad = myFeet.IsTouchingLayers(LayerMask.GetMask("Default"));
     }
     void Jump()
     {
