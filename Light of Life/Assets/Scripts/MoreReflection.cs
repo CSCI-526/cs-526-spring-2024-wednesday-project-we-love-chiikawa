@@ -174,7 +174,9 @@ public class DynamicRectangle : MonoBehaviour
                 float lengthOfRoad1 = Road1.transform.localScale.x;
                 float Road2_1_length = lengthOfRoad1 - 1.5f;     
                 Road2_1.transform.localScale = new Vector2(Road2_1_length, Road2.transform.localScale.y);
+                //get position of tip of the flashlight
                 Vector2 flashlightTip = (Vector2)FlashLight.position + (Vector2)FlashLight.right * FlashLight.localScale.x * 0.5f;
+                //change position of Road2_1
                 Road2_1.transform.position = flashlightTip;
                 Road2_1.transform.position += Road2_1.transform.up * 0.55f;
                 Road2_1.transform.right = FlashLight.right;
