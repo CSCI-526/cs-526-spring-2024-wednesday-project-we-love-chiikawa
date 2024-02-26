@@ -1,8 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPath : MonoBehaviour
+using System.Runtime.CompilerServices;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
+using UnityEngine;
+using System.Net;
+
+public class DynamicRectangle : MonoBehaviour
 {
     /*
     * 每个游戏对象都有一个 Transform 组件，它负责保存和管理游戏对象的空间属性。
@@ -42,6 +47,8 @@ public class NewPath : MonoBehaviour
         InitializeRoad(Road3);
 
     }
+
+
     void InitializeRoad(GameObject Road)
     {
         // 创建Road，并添加Collider和组件

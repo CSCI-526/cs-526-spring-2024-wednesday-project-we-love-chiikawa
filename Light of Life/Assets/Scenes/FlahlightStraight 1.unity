@@ -1027,6 +1027,7 @@ GameObject:
   - component: {fileID: 573038471}
   - component: {fileID: 573038473}
   - component: {fileID: 573038472}
+  - component: {fileID: 573038474}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -1115,6 +1116,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &573038474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573038470}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88b877acd4388f489bcbd37b65fd015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  groundCheck: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1190813180
 GameObject:
   m_ObjectHideFlags: 0
