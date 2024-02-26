@@ -1,8 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPath : MonoBehaviour
+using System.Runtime.CompilerServices;
+using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
+using UnityEngine;
+using System.Net;
+
+public class DynamicRectangle : MonoBehaviour
 {
     /*
     * 每个游戏对象都有一个 Transform 组件，它负责保存和管理游戏对象的空间属性。
@@ -42,6 +47,8 @@ public class NewPath : MonoBehaviour
         InitializeRoad(Road3);
 
     }
+
+
     void InitializeRoad(GameObject Road)
     {
         // 创建Road，并添加Collider和组件
@@ -50,6 +57,9 @@ public class NewPath : MonoBehaviour
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.red;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
+                                       //设置Layer
+
+
         //方向
         Road.transform.up = FlashLight.up;
     }
@@ -105,101 +115,100 @@ public class NewPath : MonoBehaviour
                 Road3_1.transform.position += Road3_1.transform.right * 0.25f;
             }
 
-        }
 
 
-
-        //随着鼠标位置伸长road，碰撞后反射/折射
-        int ExtendRoad(GameObject Road, GameObject NewRoad, int RoadNo)
-        {
-            Destroy(Road2_1);
-            Destroy(Road3_1);
-            //获取鼠标位置 计算Road的位置和长度
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Flashlight右面的法向量，并计算单位向量
-            Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
-            Vector2 FR_normalized = flashlightRight.normalized;
-            //获取Flashlight的Vector2类型
-            Vector2 flashlightPosition = FlashLight.position;
-            //Flashlight到Mouse的向量FM
-            Vector2 FM = flashlightPosition - mousePosition;
-            // 计算FM在Fu上的投影的大小
-            float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
-
-            //未碰撞，随鼠标移动
-            if (!isColliding || distance < lastSafeDistance)
+            //随着鼠标位置伸长road，碰撞后反射/折射
+            int ExtendRoad(GameObject Road, GameObject NewRoad, int RoadNo)
             {
-                //计算投影点N的坐标
-                Vector2 N = flashlightPosition + FR_normalized * distance;
-                Vector2 midPoint = (N + flashlightPosition) / 2f;
+                Destroy(Road2_1);
+                Destroy(Road3_1);
+                //获取鼠标位置 计算Road的位置和长度
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                //Flashlight右面的法向量，并计算单位向量
+                Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
+                Vector2 FR_normalized = flashlightRight.normalized;
+                //获取Flashlight的Vector2类型
+                Vector2 flashlightPosition = FlashLight.position;
+                //Flashlight到Mouse的向量FM
+                Vector2 FM = flashlightPosition - mousePosition;
+                // 计算FM在Fu上的投影的大小
+                float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
 
-                //更新Road尺寸
-                Road.transform.localScale = new Vector2(distance, 0.05f);
-
-                //更新Road坐标和Collider尺寸
-
-                switch (RoadNo)
+                //未碰撞，随鼠标移动
+                if (!isColliding || distance < lastSafeDistance)
                 {
-                    case 1:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            Road.transform.position -= FlashLight.up * 0.5f;
-                            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-                            Roadcollider.size = new Vector2(distance, 0.05f);
-                            break;
-                        }
-                    case 2:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            Road.transform.position += FlashLight.up * 0.5f;
-                            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-                            Roadcollider.size = new Vector2(distance, 0.05f);
-                            break;
-                        }
-                    case 3:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            break;
-                        }
+                    //计算投影点N的坐标
+                    Vector2 N = flashlightPosition + FR_normalized * distance;
+                    Vector2 midPoint = (N + flashlightPosition) / 2f;
+
+                    //更新Road尺寸
+                    Road.transform.localScale = new Vector2(distance, 0.05f);
+
+                    //更新Road坐标和Collider尺寸
+
+                    switch (RoadNo)
+                    {
+                        case 1:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                Road.transform.position -= FlashLight.up * 0.5f;
+                                BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+                                Roadcollider.size = new Vector2(distance, 0.05f);
+                                break;
+                            }
+                        case 2:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                Road.transform.position += FlashLight.up * 0.5f;
+                                BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+                                Roadcollider.size = new Vector2(distance, 0.05f);
+                                break;
+                            }
+                        case 3:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                break;
+                            }
+                    }
+                    // 更新上次安全距离
+                    lastSafeDistance = distance;
                 }
-                // 更新上次安全距离
-                lastSafeDistance = distance;
-            }
 
-            //检测碰撞
-            RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
+                //检测碰撞
+                RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
 
-            //如果碰撞了
-            if (hit.collider != null)
-            {
-                isColliding = true;
-                Vector2 hitPoint = hit.point;
-                //如果碰撞的是metal，转120度
-                //后序可以根据介质修改角度
-                if (hit.collider.gameObject.name.ToLower().Contains("metal"))
+                //如果碰撞了
+                if (hit.collider != null)
                 {
-                    Road1_1 = Instantiate(Road);
-                    //设置长度为5.0f
-                    Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
-                    //position大致为撞击点
-                    Road1_1.transform.position = hitPoint;
-                    float roadRotation = Road.transform.eulerAngles.z;
-                    Debug.Log(Road.transform.eulerAngles.z);
-                    // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
-                    Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
-                    Debug.Log(Road1_1.transform.eulerAngles.z);
-                    Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
-                    Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+                    isColliding = true;
+                    Vector2 hitPoint = hit.point;
+                    //如果碰撞的是metal，转120度
+                    //后序可以根据介质修改角度
+                    if (hit.collider.gameObject.name.ToLower().Contains("metal"))
+                    {
+                        Road1_1 = Instantiate(Road);
+                        //设置长度为5.0f
+                        Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
+                        //position大致为撞击点
+                        Road1_1.transform.position = hitPoint;
+                        float roadRotation = Road.transform.eulerAngles.z;
+                        Debug.Log(Road.transform.eulerAngles.z);
+                        // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
+                        Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
+                        Debug.Log(Road1_1.transform.eulerAngles.z);
+                        Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
+                        Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+                    }
+                    return RoadNo; //返回碰撞的Road编号
                 }
-                return RoadNo; //返回碰撞的Road编号
+                // 如果没有碰撞，重置isColliding
+                else
+                {
+                    isColliding = false;
+                    Destroy(Road1_1);
+                }
+                return 0; //返回0表示没有碰撞
             }
-            // 如果没有碰撞，重置isColliding
-            else
-            {
-                isColliding = false;
-                Destroy(Road1_1);
-            }
-            return 0; //返回0表示没有碰撞
         }
     }
 }

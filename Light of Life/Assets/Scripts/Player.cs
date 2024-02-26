@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D myRigidbody;
     private BoxCollider2D myFeet;
     private bool isGrounded;
+    private bool isOnRoad;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,13 +35,14 @@ public class Player : MonoBehaviour
     void CheckGrounded()
     {
         isGrounded = myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        isOnRoad = myFeet.IsTouchingLayers(LayerMask.GetMask("Road"));
     }
     void Jump()
     {
         
         if (Input.GetButtonDown("Jump"))// && isGrounded)
         {
-            if (isGrounded)
+            if (isGrounded||isOnRoad)
             {
                 Vector2 jumpVel = new Vector2(0.0f, jumpSpeed);
                 myRigidbody.velocity =Vector2.up*jumpVel;
