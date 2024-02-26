@@ -1,24 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-using System.Runtime.CompilerServices;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
-using UnityEngine;
-using System.Net;
-
-public class DynamicRectangle : MonoBehaviour
-{   
+public class NewPath : MonoBehaviour
+{
     /*
-    未完成的：
-    验证道路能不能走
-    如果是Road2先撞击的情况（Update函数）
-    对于不同材质，折射角度不同
-    */
-    public Transform FlashLight; 
-    private GameObject Road1; 
+    * 每个游戏对象都有一个 Transform 组件，它负责保存和管理游戏对象的空间属性。
+    * 而 GameObject 则是游戏对象的类，代表了场景中的实体，它可以具有多个组件，其中一个就是 Transform。
+       因此，当你声明 FlashLight 为 public Transform 时，它实际上是指向了一个游戏对象的位置、旋转和比例等信息，而不是游戏对象本身。
+    * */
+    public Transform FlashLight;
+    private GameObject Road1;
     private GameObject Road1_1;
-    private GameObject Road2; 
+    private GameObject Road2;
     private GameObject Road2_1;
     private GameObject Road3;
     private GameObject Road3_1;
@@ -26,6 +20,7 @@ public class DynamicRectangle : MonoBehaviour
     private bool isColliding = false;//if is colliding, road stop growing
     private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
     private int ObstacleType = 0; //障碍物类型
+    private int CollidedRoad = 0;
     bool fixedRoads = false;
 
     void Start()
@@ -47,8 +42,6 @@ public class DynamicRectangle : MonoBehaviour
         InitializeRoad(Road3);
 
     }
-
-
     void InitializeRoad(GameObject Road)
     {
         // 创建Road，并添加Collider和组件
@@ -73,22 +66,22 @@ public class DynamicRectangle : MonoBehaviour
         if (!fixedRoads)
         {
             //如果撞击到的是Road1（Road2的还没写）
-            bool road1Collided = ExtendRoad(Road1,Road1_1, 1) == 1;
+            bool road1Collided = ExtendRoad(Road1, Road1_1, 1) == 1;
 
             // Extend Road2 and Road3 only if Road1 has not collided
             // This assumes ExtendRoad returns 1 if collision occurs for the specific road
             if (!road1Collided)
             {
-                ExtendRoad(Road2,Road2_1, 2);
-                ExtendRoad(Road3,Road3_1, 3);
+                ExtendRoad(Road2, Road2_1, 2);
+                ExtendRoad(Road3, Road3_1, 3);
             }
-            
+
             else
             {
                 //根据Road1更新另外两条Road的位置和长度
                 Road2.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.5f, 0.05f); //减掉一截长度
                 Road2.transform.position = Road1.transform.position + FlashLight.up * 1.0f; //更新位置
-                Road2.transform.position-=Road2.transform.right * 0.75f;
+                Road2.transform.position -= Road2.transform.right * 0.75f;
                 BoxCollider2D Roadcollider2 = Road2.GetComponent<BoxCollider2D>();
                 Roadcollider2.size = new Vector2(Road1.transform.localScale.x - 2.0f, 0.05f);
                 Road3.transform.localScale = new Vector2(Road1.transform.localScale.x - 0.5f, 0.05f); //减掉一截长度
@@ -99,8 +92,8 @@ public class DynamicRectangle : MonoBehaviour
                 Road2_1 = Instantiate(Road2);
                 float roadRotation2 = Road2.transform.eulerAngles.z; //旋转R2_1
                 Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation2 + 120f);
-                Road2_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 1.0f, 0.05f); 
-                Road2_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 1.0f; 
+                Road2_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 1.0f, 0.05f);
+                Road2_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 1.0f;
                 Road2_1.transform.position += Road2_1.transform.right * 1.0f;  //
                 BoxCollider2D Roadcollider2_1 = Road2_1.GetComponent<BoxCollider2D>();
                 Roadcollider2_1.size = new Vector2(Road2.transform.localScale.x - 2.0f, 0.05f);
@@ -111,14 +104,14 @@ public class DynamicRectangle : MonoBehaviour
                 Road3_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 0.5f; //更新位置
                 Road3_1.transform.position += Road3_1.transform.right * 0.25f;
             }
-            
+
         }
 
 
 
-    //随着鼠标位置伸长road，碰撞后反射/折射
-    int ExtendRoad(GameObject Road,GameObject NewRoad, int RoadNo)
-    {   
+        //随着鼠标位置伸长road，碰撞后反射/折射
+        int ExtendRoad(GameObject Road, GameObject NewRoad, int RoadNo)
+        {
             Destroy(Road2_1);
             Destroy(Road3_1);
             //获取鼠标位置 计算Road的位置和长度
