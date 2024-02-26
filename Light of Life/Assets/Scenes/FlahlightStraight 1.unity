@@ -574,7 +574,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205270368}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c88b877acd4388f489bcbd37b65fd015, type: 3}
   m_Name: 
@@ -717,7 +717,7 @@ Transform:
   m_GameObject: {fileID: 205270368}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.8221, y: -4.0191, z: 0}
+  m_LocalPosition: {x: -11.63, y: -4.0191, z: 0}
   m_LocalScale: {x: 0.3759, y: 0.5709, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1026,10 +1026,9 @@ GameObject:
   m_Component:
   - component: {fileID: 573038471}
   - component: {fileID: 573038473}
-  - component: {fileID: 573038472}
   - component: {fileID: 573038474}
   m_Layer: 0
-  m_Name: Surface
+  m_Name: Surface2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1050,20 +1049,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1782388289}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.388}
---- !u!114 &573038472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573038470}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 573038471}
-  roadRenderer: {fileID: 0}
 --- !u!212 &573038473
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1123,16 +1108,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573038470}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88b877acd4388f489bcbd37b65fd015, type: 3}
+  m_Script: {fileID: 11500000, guid: 046d0aa11bcfd49d39a659d4ab6b1d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  groundCheck: {fileID: 0}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  FlashLight: {fileID: 573038471}
+  roadRenderer: {fileID: 0}
 --- !u!1 &1190813180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,7 +1125,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1190813181}
   - component: {fileID: 1190813182}
-  - component: {fileID: 1190813184}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -1218,20 +1199,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190813184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
 --- !u!1 &1300640760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1543882428}
   m_Layer: 0
-  m_Name: Flashlight2(Reflection)
+  m_Name: Flashlight1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1588,7 +1555,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577515539}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca898120d176f2243b0396122ffacf5c, type: 3}
   m_Name: 
@@ -1815,7 +1782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1782388289}
   m_Layer: 0
-  m_Name: Flashlight2(Reflection) (1)
+  m_Name: Flashlight2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1829,8 +1796,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1782388288}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.0943139, w: 0.9955425}
-  m_LocalPosition: {x: 5, y: 0.45, z: 0.047513526}
+  m_LocalRotation: {x: -0, y: -0, z: 0.06296572, w: 0.99801576}
+  m_LocalPosition: {x: 2.37, y: -0.05, z: 0.047513526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1838,7 +1805,7 @@ Transform:
   - {fileID: 550141517}
   - {fileID: 573038471}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 10.824}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 7.22}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

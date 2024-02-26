@@ -57,6 +57,9 @@ public class DynamicRectangle : MonoBehaviour
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.red;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
+        //设置Layer
+        
+
         //方向
         Road.transform.up = FlashLight.up;
     }
@@ -94,7 +97,7 @@ public class DynamicRectangle : MonoBehaviour
                 Road3.transform.localScale = new Vector2(Road1.transform.localScale.x - 0.5f, 0.05f); //减掉一截长度
                 Road3.transform.position = Road1.transform.position + FlashLight.up * 0.5f; //更新位置
                 Road3.transform.position -= Road3.transform.right * 0.25f;
-
+                
                 //根据Road1_1更新另外两条Road的位置和长度
                 Road2_1 = Instantiate(Road2);
                 float roadRotation2 = Road2.transform.eulerAngles.z; //旋转R2_1
@@ -110,8 +113,6 @@ public class DynamicRectangle : MonoBehaviour
                 Road3_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 0.5f, 0.05f); //减掉一截长度
                 Road3_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 0.5f; //更新位置
                 Road3_1.transform.position += Road3_1.transform.right * 0.25f;
-            }
-
         }
 
 

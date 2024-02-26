@@ -9,372 +9,213 @@ using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using System.Net;
 
-public class More : MonoBehaviour {
+public class More : MonoBehaviour
+{
     public Transform FlashLight; // ????A??Transform
     private GameObject Road1; // ????B
-public class DynamicRectangle : MonoBehaviour
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
-{   
-    /*
-    δ?????
-    ?????·???????
-    ?????Road2????????????Update??????
-    ???????????????????
-    */
-    public Transform FlashLight; 
-    private GameObject Road1; 
-    private GameObject Road1_1;
-    private GameObject Road2; 
-    private GameObject Road2_1;
-    private GameObject Road3;
-    private GameObject Road3_1;
-    public SpriteRenderer roadRenderer;
-    private bool isColliding = false;//if is colliding, road stop growing
-    private float lastSafeDistance = 0f; // ?????????????δ???????????????????????????????????????????????
-    private int ObstacleType = 0; //?????????
-    bool fixedRoads = false;
-=======
-{   /*
-     * ??????????????? Transform ???????????????????????????????
-     * ?? GameObject ????????????????????????е???壬????????ж?????????????????? Transform??
-        ???????????? FlashLight ? public Transform ????????????????????????????λ?á?????????????????????????????????
-     * */
-    public Transform FlashLight; // ????A??Transform
-    private GameObject Road1; // ????B
-    private GameObject Road1_1;
-    private GameObject Road2; // ????B
-    private GameObject Road2_1;
-    private GameObject Road2_2;
-    public SpriteRenderer roadRenderer;
-    private bool isColliding = false;//if is colliding, road stop growing
-    private float lastSafeDistance = 0f; // ??????????????????????????????????????????????????????????????
-    private int ObstacleType=0; //?????????
-
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
-
-    void Start()
+    public class DynamicRectangle : MonoBehaviour
     {
-        //??????
-        Road1 = new GameObject("Road1");
-        InitializeRoad(Road1);
-        BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
-        Road1collider.size = new Vector2(1, 0.05f); // ??????????????????????????
+        /*
+        * 每个游戏对象都有一个 Transform 组件，它负责保存和管理游戏对象的空间属性。
+        * 而 GameObject 则是游戏对象的类，代表了场景中的实体，它可以具有多个组件，其中一个就是 Transform。
+           因此，当你声明 FlashLight 为 public Transform 时，它实际上是指向了一个游戏对象的位置、旋转和比例等信息，而不是游戏对象本身。
+        * */
+        public Transform FlashLight;
+        private GameObject Road1;
+        private GameObject Road1_1;
+        private GameObject Road2;
+        private GameObject Road2_1;
+        private GameObject Road3;
+        private GameObject Road3_1;
+        public SpriteRenderer roadRenderer;
+        private bool isColliding = false;//if is colliding, road stop growing
+        private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
+        private int ObstacleType = 0; //障碍物类型
+        private int CollidedRoad = 0;
+        bool fixedRoads = false;
 
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
-        ////????·
-        Road2 = new GameObject("Road2");
-        InitializeRoad(Road2);
-        BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();
-        Road2collider.size = new Vector2(0.05f, 0.05f);
-
-=======
-        //????·
-        Road2 = new GameObject("Road2");
-        InitializeRoad(Road2, 2);
-        BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();        Road2collider.size = new Vector2(1, 0.05f);  
-        
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
-        //?м??·???????collider??
-        Road3 = new GameObject("Road3");
-        InitializeRoad(Road3);
-
-    }
-
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
-
-    void InitializeRoad(GameObject Road)
-=======
-    void InitializeRoad(GameObject Road, int dir)
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
-    {
-        // ????Road????????Collider?????
-        roadRenderer = Road.AddComponent<SpriteRenderer>();
-        Sprite defaultSprite = Resources.Load<Sprite>("Square");
-        roadRenderer.sprite = defaultSprite;
-        roadRenderer.color = Color.red;
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
-        roadRenderer.sortingOrder = 1; //???·??????????????棬???????
-        //????
-=======
-        //???·??????????????棬???????
-        roadRenderer.sortingOrder = 1; 
-        //?????????????
-        //Road.transform.localScale = new Vector2(5.0f, 0.05f);
-        
-
-        // ?????Road????????????
-        Road.transform.position = FlashLight.position;
-        //if the road is on right/down side, adjust position to right/down
-        switch (dir)
+        void Start()
         {
-            case 1:
-                Road.transform.localScale = new Vector2(5.0f, 0.05f);
-                Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
-                break;
-            case 2:
-                Road.transform.localScale = new Vector2(4.0f, 0.05f);
-                Road.transform.position += FlashLight.up * 0.5f;
-                Road.transform.position += FlashLight.right * 2.0f;
-                break;
+            //右边的路
+            Road1 = new GameObject("Road1");
+            InitializeRoad(Road1);
+            BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
+            Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
+
+            ////左边的路
+            Road2 = new GameObject("Road2");
+            InitializeRoad(Road2);
+            BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();
+            Road2collider.size = new Vector2(0.05f, 0.05f);
+
+            //中间的路（不需要collider）
+            Road3 = new GameObject("Road3");
+            InitializeRoad(Road3);
 
         }
-            
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
-        Road.transform.up = FlashLight.up;
-    }
 
 
-    void Update()
-    {
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
-        //??F???л????????·
-        if (Input.GetKeyDown(KeyCode.F))
+        void InitializeRoad(GameObject Road)
         {
-            fixedRoads = !fixedRoads;
+            // 创建Road，并添加Collider和组件
+            roadRenderer = Road.AddComponent<SpriteRenderer>();
+            Sprite defaultSprite = Resources.Load<Sprite>("Square");
+            roadRenderer.sprite = defaultSprite;
+            roadRenderer.color = Color.red;
+            roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
+                                           //方向
+            Road.transform.up = FlashLight.up;
         }
 
-        if (!fixedRoads)
-        {
-            //????????????Road1??Road2????д??
-            bool road1Collided = ExtendRoad(Road1,Road1_1, 1) == 1;
 
-            // Extend Road2 and Road3 only if Road1 has not collided
-            // This assumes ExtendRoad returns 1 if collision occurs for the specific road
-            if (!road1Collided)
+        void Update()
+        {
+            //按F键切换是否固定道路
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                ExtendRoad(Road2,Road2_1, 2);
-                ExtendRoad(Road3,Road3_1, 3);
+                fixedRoads = !fixedRoads;
             }
-            
-            else
+
+            if (!fixedRoads)
             {
-                //????Road1????????????Road??λ?ú????
-                Road2.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.5f, 0.05f); //??????????
-                Road2.transform.position = Road1.transform.position + FlashLight.up * 1.0f; //????λ??
-                Road2.transform.position-=Road2.transform.right * 0.75f;
-                BoxCollider2D Roadcollider2 = Road2.GetComponent<BoxCollider2D>();
-                Roadcollider2.size = new Vector2(Road1.transform.localScale.x - 2.0f, 0.05f);
-                Road3.transform.localScale = new Vector2(Road1.transform.localScale.x - 0.5f, 0.05f); //??????????
-                Road3.transform.position = Road1.transform.position + FlashLight.up * 0.5f; //????λ??
-                Road3.transform.position -= Road3.transform.right * 0.25f;
+                //如果撞击到的是Road1（Road2的还没写）
+                bool road1Collided = ExtendRoad(Road1, Road1_1, 1) == 1;
 
-                //????Road1_1????????????Road??λ?ú????
-                Road2_1 = Instantiate(Road2);
-                float roadRotation2 = Road2.transform.eulerAngles.z; //???R2_1
-                Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation2 + 120f);
-                Road2_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 1.0f, 0.05f); 
-                Road2_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 1.0f; 
-                Road2_1.transform.position += Road2_1.transform.right * 1.0f;  //
-                BoxCollider2D Roadcollider2_1 = Road2_1.GetComponent<BoxCollider2D>();
-                Roadcollider2_1.size = new Vector2(Road2.transform.localScale.x - 2.0f, 0.05f);
-                Road3_1 = Instantiate(Road3);
-                float roadRotation3 = Road3.transform.eulerAngles.z; //???R3_1
-                Road3_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation3 + 120f);
-                Road3_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 0.5f, 0.05f); //??????????
-                Road3_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 0.5f; //????λ??
-                Road3_1.transform.position += Road3_1.transform.right * 0.25f;
-            }
-            
-        }
-
-=======
-        UpdateRoad(Road1,Road1_1);
-        //UpdateRoad(Road2, null); 
-
-    }
-
-    // Vector2 GetEndpoint(Transform roadTransform)
-    // {
-    //     // Length of the road is represented by the local scale x value
-    //     float length = roadTransform.localScale.x;
-        
-    //     // Convert Transform.right to a Vector2
-    //     Vector2 direction = (Vector2)roadTransform.right; // Explicit cast to Vector2
-        
-    //     // Convert Transform.position to a Vector2
-    //     Vector2 position = (Vector2)roadTransform.position; // Explicit cast to Vector2
-        
-    //     // Calculate the endpoint by adding half the length to the road's position
-    //     // Assuming the pivot is in the center of the road object
-    //     Vector2 endpoint = position + direction * (length / 2);
-        
-    //     return endpoint;
-    // }
-
-
-
-    void UpdateRoad(GameObject Road, GameObject NewRoad)
-    {
-        //?????????? ????Road???????????
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Flashlight????????????????????????
-        Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
-        Vector2 FR_normalized = flashlightRight.normalized;
-        //???Flashlight??Vector2????
-        Vector2 flashlightPosition = FlashLight.position;
-        //Flashlight??Mouse??????FM
-        Vector2 FM = flashlightPosition - mousePosition;
-        // ????FM??Fu??????????
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
-
-        // ???????????????????distance???????????????Road??????????????Road
-        //???????????????????lasteDis=????????????????????isColliding=1?????????????????????distance???????????LastDis??????????????Road?????
-        if (!isColliding || distance < lastSafeDistance)
-        {
-            //????????N??????
-            Vector2 N = flashlightPosition + FR_normalized * distance;
-            Vector2 midPoint = (N + flashlightPosition) / 2f;
-
-            //????Road???????????
-            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-            Road.transform.position -= FlashLight.up * 0.5f;
-            //????Road????
-            Road.transform.localScale = new Vector2(distance, 0.05f);
-            // ?????????????
-            lastSafeDistance = distance;
-            //?????????????
-            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-            Roadcollider.size = new Vector2(distance, 0.05f);
-            //Roadcollider.offset = new Vector2(distance / 2, 0);
-        }
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
-
-
-    //???????λ????road?????????/????
-    int ExtendRoad(GameObject Road,GameObject NewRoad, int RoadNo)
-    {   
-            Destroy(Road2_1);
-            Destroy(Road3_1);
-            //??????λ?? ????Road??λ?ú????
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Flashlight??????????????????λ????
-            Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
-            Vector2 FR_normalized = flashlightRight.normalized;
-            //???Flashlight??Vector2????
-            Vector2 flashlightPosition = FlashLight.position;
-            //Flashlight??Mouse??????FM
-            Vector2 FM = flashlightPosition - mousePosition;
-            // ????FM??Fu????????С
-            float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
-
-            //δ?????????????
-            if (!isColliding || distance < lastSafeDistance)
-            {
-                //????????N??????
-                Vector2 N = flashlightPosition + FR_normalized * distance;
-                Vector2 midPoint = (N + flashlightPosition) / 2f;
-
-                //????Road???
-                Road.transform.localScale = new Vector2(distance, 0.05f);
-
-                //????Road?????Collider???
-
-                switch (RoadNo)
+                // Extend Road2 and Road3 only if Road1 has not collided
+                // This assumes ExtendRoad returns 1 if collision occurs for the specific road
+                if (!road1Collided)
                 {
-                    case 1:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            Road.transform.position -= FlashLight.up * 0.5f;
-                            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-                            Roadcollider.size = new Vector2(distance, 0.05f);
-                            break;
-                        }
-                    case 2:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            Road.transform.position += FlashLight.up * 0.5f;
-                            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-                            Roadcollider.size = new Vector2(distance, 0.05f);
-                            break;
-                        }
-                    case 3:
-                        {
-                            Road.transform.position = new Vector2(midPoint.x, midPoint.y);
-                            break;
-                        }
+                    ExtendRoad(Road2, Road2_1, 2);
+                    ExtendRoad(Road3, Road3_1, 3);
                 }
-                // ?????????????
-                lastSafeDistance = distance;
+
+                else
+                {
+                    //根据Road1更新另外两条Road的位置和长度
+                    Road2.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.5f, 0.05f); //减掉一截长度
+                    Road2.transform.position = Road1.transform.position + FlashLight.up * 1.0f; //更新位置
+                    Road2.transform.position -= Road2.transform.right * 0.75f;
+                    BoxCollider2D Roadcollider2 = Road2.GetComponent<BoxCollider2D>();
+                    Roadcollider2.size = new Vector2(Road1.transform.localScale.x - 2.0f, 0.05f);
+                    Road3.transform.localScale = new Vector2(Road1.transform.localScale.x - 0.5f, 0.05f); //减掉一截长度
+                    Road3.transform.position = Road1.transform.position + FlashLight.up * 0.5f; //更新位置
+                    Road3.transform.position -= Road3.transform.right * 0.25f;
+
+                    //根据Road1_1更新另外两条Road的位置和长度
+                    Road2_1 = Instantiate(Road2);
+                    float roadRotation2 = Road2.transform.eulerAngles.z; //旋转R2_1
+                    Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation2 + 120f);
+                    Road2_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 1.0f, 0.05f);
+                    Road2_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 1.0f;
+                    Road2_1.transform.position += Road2_1.transform.right * 1.0f;  //
+                    BoxCollider2D Roadcollider2_1 = Road2_1.GetComponent<BoxCollider2D>();
+                    Roadcollider2_1.size = new Vector2(Road2.transform.localScale.x - 2.0f, 0.05f);
+                    Road3_1 = Instantiate(Road3);
+                    float roadRotation3 = Road3.transform.eulerAngles.z; //旋转R3_1
+                    Road3_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation3 + 120f);
+                    Road3_1.transform.localScale = new Vector2(Road1_1.transform.localScale.x - 0.5f, 0.05f); //减掉一截长度
+                    Road3_1.transform.position = Road1_1.transform.position + Road1_1.transform.up * 0.5f; //更新位置
+                    Road3_1.transform.position += Road3_1.transform.right * 0.25f;
+                }
+
             }
-<<<<<<< HEAD:Light of Life/Assets/Scripts/NewPath.cs
 
-            //??????
-            RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
 
-        //????????
-        if (hit.collider != null && !isColliding)
-        {
-            isColliding = true;
-            if (hit.collider.gameObject.name.ToLower().Contains("metal"))
-            //????????????
+
+            //随着鼠标位置伸长road，碰撞后反射/折射
+            int ExtendRoad(GameObject Road, GameObject NewRoad, int RoadNo)
             {
-                ObstacleType = 1;
+                Destroy(Road2_1);
+                Destroy(Road3_1);
+                //获取鼠标位置 计算Road的位置和长度
+                Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                //Flashlight右面的法向量，并计算单位向量
+                Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
+                Vector2 FR_normalized = flashlightRight.normalized;
+                //获取Flashlight的Vector2类型
+                Vector2 flashlightPosition = FlashLight.position;
+                //Flashlight到Mouse的向量FM
+                Vector2 FM = flashlightPosition - mousePosition;
+                // 计算FM在Fu上的投影的大小
+                float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
+
+                //未碰撞，随鼠标移动
+                if (!isColliding || distance < lastSafeDistance)
+                {
+                    //计算投影点N的坐标
+                    Vector2 N = flashlightPosition + FR_normalized * distance;
+                    Vector2 midPoint = (N + flashlightPosition) / 2f;
+
+                    //更新Road尺寸
+                    Road.transform.localScale = new Vector2(distance, 0.05f);
+
+                    //更新Road坐标和Collider尺寸
+
+                    switch (RoadNo)
+                    {
+                        case 1:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                Road.transform.position -= FlashLight.up * 0.5f;
+                                BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+                                Roadcollider.size = new Vector2(distance, 0.05f);
+                                break;
+                            }
+                        case 2:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                Road.transform.position += FlashLight.up * 0.5f;
+                                BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+                                Roadcollider.size = new Vector2(distance, 0.05f);
+                                break;
+                            }
+                        case 3:
+                            {
+                                Road.transform.position = new Vector2(midPoint.x, midPoint.y);
+                                break;
+                            }
+                    }
+                    // 更新上次安全距离
+                    lastSafeDistance = distance;
+                }
+
+                //检测碰撞
+                RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
+
+                //如果碰撞了
+                if (hit.collider != null)
+                {
+                    isColliding = true;
+                    Vector2 hitPoint = hit.point;
+                    //如果碰撞的是metal，转120度
+                    //后序可以根据介质修改角度
+                    if (hit.collider.gameObject.name.ToLower().Contains("metal"))
+                    {
+                        Road1_1 = Instantiate(Road);
+                        //设置长度为5.0f
+                        Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
+                        //position大致为撞击点
+                        Road1_1.transform.position = hitPoint;
+                        float roadRotation = Road.transform.eulerAngles.z;
+                        Debug.Log(Road.transform.eulerAngles.z);
+                        // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
+                        Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
+                        Debug.Log(Road1_1.transform.eulerAngles.z);
+                        Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
+                        Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+                    }
+                    return RoadNo; //返回碰撞的Road编号
+                }
+                // 如果没有碰撞，重置isColliding
+                else
+                {
+                    isColliding = false;
+                    Destroy(Road1_1);
+                }
+                return 0; //返回0表示没有碰撞
             }
-            //????????
-            Vector2 hitPoint = hit.point;
-            if(ObstacleType == 1)
-            {
-          
-                //???????hp???????????
-                // ??????????
-                ////?????????????????????Road1_1?????NewRoad??????CreateNewRoad(NewRoad,hitPoint,ObstacleType,)
-                Road1_1 = Instantiate(Road);
-                //?????????5.0f
-                Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
-                //position??????????
-                Road1_1.transform.position = hitPoint;
-                float roadRotation = Road.transform.eulerAngles.z;
-                Debug.Log(Road.transform.eulerAngles.z);
-                // ?? Road1_1 ????????????? Road ?????????????? 120??
-                Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //???????????x????????
-                Debug.Log(Road1_1.transform.eulerAngles.z);
-                Road1_1.transform.position += Road1_1.transform.right * 2.0f;//????????????????2.5??????????????
-                Road1_1.transform.position += Road1_1.transform.up * 0.05f;
-
-                 //create + position + rotate Road2_1, the bottom edge
-                Road2_1 = Instantiate(Road2);
-                float lengthOfRoad1 = Road1.transform.localScale.x;
-                float Road2_1_length = lengthOfRoad1 - 1.5f;     
-                Road2_1.transform.localScale = new Vector2(Road2_1_length, Road2.transform.localScale.y);
-                //get position of tip of the flashlight
-                Vector2 flashlightTip = (Vector2)FlashLight.position + (Vector2)FlashLight.right * FlashLight.localScale.x * 0.5f;
-                //change position of Road2_1
-                Road2_1.transform.position = flashlightTip;
-                Road2_1.transform.position += Road2_1.transform.up * 0.55f;
-                Road2_1.transform.right = FlashLight.right;
-                Road2_1.transform.position = (Vector2)Road2_1.transform.position + (Vector2)Road2_1.transform.right * Road2_1.transform.localScale.x * 0.5f;
-
-
-                //create + position + rotate Road2_2, the upper edge
-                float lengthOfRoad1_1 = Road1_1.transform.localScale.x;
-                float Road2_2_length = lengthOfRoad1_1 * 0.6f;
-                Road2_2 = Instantiate(Road2);
-                Road2_2.transform.localScale = new Vector2(Road2_2_length, Road1_1.transform.localScale.y);
-                Road2_2.transform.rotation = Road1_1.transform.rotation * Quaternion.Euler(0, 0, 180);
-                Vector2 endOfRoad2_1 = (Vector2)Road2_1.transform.position + (Vector2)Road2_1.transform.right * Road2_1.transform.localScale.x * 0.5f; 
-                Vector2 startOfRoad2_2 = endOfRoad2_1 - (Vector2)Road2_2.transform.right * Road2_2.transform.localScale.x * 0.5f;
-                Road2_2.transform.position = startOfRoad2_2;
-
-                Road2.SetActive(false);
-
-            }
-
-            ObstacleType = 0;
-
-        }
-        // ???????????????isColliding
-        else if (hit.collider == null)
-        {
-            //??????????
-            Destroy(Road1_1);
-            Destroy(Road2_1);
-            Destroy(Road2_2);
-            isColliding = false;
-            Road2.SetActive(true); 
-            lastSafeDistance = Mathf.Infinity;
         }
     }
 }
 
 
->>>>>>> af445ec463e9317e179b98b21928f46d444f9125:Light of Life/Assets/Scripts/MoreReflection.cs
