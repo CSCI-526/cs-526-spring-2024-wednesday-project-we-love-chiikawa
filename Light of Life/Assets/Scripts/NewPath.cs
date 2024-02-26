@@ -15,6 +15,7 @@ public class DynamicRectangle : MonoBehaviour
     private GameObject Road1_1;
     private GameObject Road2; // 物体B
     private GameObject Road2_1;
+    private GameObject Road2_2;
     public SpriteRenderer roadRenderer;
     private bool isColliding = false;//if is colliding, road stop growing
     private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
@@ -32,8 +33,7 @@ public class DynamicRectangle : MonoBehaviour
         //左边的路
         Road2 = new GameObject("Road2");
         InitializeRoad(Road2, 2);
-        BoxCollider2D Road2collider = Road1.AddComponent<BoxCollider2D>();
-        Road2collider.size = new Vector2(1, 0.05f); 
+        BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();        Road2collider.size = new Vector2(1, 0.05f);  
         
         //中间的路（不需要collider）
 
@@ -50,7 +50,7 @@ public class DynamicRectangle : MonoBehaviour
         //让道路渲染在障碍物的上面，不会被挡住
         roadRenderer.sortingOrder = 1; 
         //初始化路径大小
-        Road.transform.localScale = new Vector2(5.0f, 0.05f);
+        //Road.transform.localScale = new Vector2(5.0f, 0.05f);
         
 
         // 初始化Road位置和旋转角度
@@ -59,10 +59,13 @@ public class DynamicRectangle : MonoBehaviour
         switch (dir)
         {
             case 1:
+                Road.transform.localScale = new Vector2(5.0f, 0.05f);
                 Road.transform.position -= FlashLight.up * 0.5f;//Road1 is on the right/down side of the road
                 break;
             case 2:
+                Road.transform.localScale = new Vector2(4.0f, 0.05f);
                 Road.transform.position += FlashLight.up * 0.5f;
+                Road.transform.position += FlashLight.right * 2.0f;
                 break;
         }
             
@@ -72,9 +75,30 @@ public class DynamicRectangle : MonoBehaviour
 
     void Update()
     {
-        //UpdateRoad(Road1,Road1_1);
+        UpdateRoad(Road1,Road1_1);
+        //UpdateRoad(Road2, null); 
 
     }
+
+    // Vector2 GetEndpoint(Transform roadTransform)
+    // {
+    //     // Length of the road is represented by the local scale x value
+    //     float length = roadTransform.localScale.x;
+        
+    //     // Convert Transform.right to a Vector2
+    //     Vector2 direction = (Vector2)roadTransform.right; // Explicit cast to Vector2
+        
+    //     // Convert Transform.position to a Vector2
+    //     Vector2 position = (Vector2)roadTransform.position; // Explicit cast to Vector2
+        
+    //     // Calculate the endpoint by adding half the length to the road's position
+    //     // Assuming the pivot is in the center of the road object
+    //     Vector2 endpoint = position + direction * (length / 2);
+        
+    //     return endpoint;
+    // }
+
+
 
     void UpdateRoad(GameObject Road, GameObject NewRoad)
     {
@@ -144,7 +168,33 @@ public class DynamicRectangle : MonoBehaviour
                 Debug.Log(Road1_1.transform.eulerAngles.z);
                 Road1_1.transform.position += Road1_1.transform.right * 2.0f;//得这样调，本来是2.5的，但是会有个洞
                 Road1_1.transform.position += Road1_1.transform.up * 0.05f;
+
+                 //create + position + rotate Road2_1, the bottom edge
+                Road2_1 = Instantiate(Road2);
+                float lengthOfRoad1 = Road1.transform.localScale.x;
+                float Road2_1_length = lengthOfRoad1 - 1.5f;     
+                Road2_1.transform.localScale = new Vector2(Road2_1_length, Road2.transform.localScale.y);
+                Vector2 flashlightTip = (Vector2)FlashLight.position + (Vector2)FlashLight.right * FlashLight.localScale.x * 0.5f;
+                Road2_1.transform.position = flashlightTip;
+                Road2_1.transform.position += Road2_1.transform.up * 0.55f;
+                Road2_1.transform.right = FlashLight.right;
+                Road2_1.transform.position = (Vector2)Road2_1.transform.position + (Vector2)Road2_1.transform.right * Road2_1.transform.localScale.x * 0.5f;
+
+
+                //create + position + rotate Road2_2, the upper edge
+                float lengthOfRoad1_1 = Road1_1.transform.localScale.x;
+                float Road2_2_length = lengthOfRoad1_1 * 0.6f;
+                Road2_2 = Instantiate(Road2);
+                Road2_2.transform.localScale = new Vector2(Road2_2_length, Road1_1.transform.localScale.y);
+                Road2_2.transform.rotation = Road1_1.transform.rotation * Quaternion.Euler(0, 0, 180);
+                Vector2 endOfRoad2_1 = (Vector2)Road2_1.transform.position + (Vector2)Road2_1.transform.right * Road2_1.transform.localScale.x * 0.5f; 
+                Vector2 startOfRoad2_2 = endOfRoad2_1 - (Vector2)Road2_2.transform.right * Road2_2.transform.localScale.x * 0.5f;
+                Road2_2.transform.position = startOfRoad2_2;
+
+                Road2.SetActive(false);
+
             }
+
             ObstacleType = 0;
 
         }
@@ -153,13 +203,12 @@ public class DynamicRectangle : MonoBehaviour
         {
             //销毁反射光线
             Destroy(Road1_1);
+            Destroy(Road2_1);
+            Destroy(Road2_2);
             isColliding = false;
+            Road2.SetActive(true); 
+            lastSafeDistance = Mathf.Infinity;
         }
-    }
-    void CreateNewRoad(GameObject NRoad, Vector2 Hitpoint, int Otype, int Rtype)
-    {
-
-        
     }
 }
 
