@@ -8,8 +8,6 @@ public class FlashLightRe : MonoBehaviour
        因此，当你声明 FlashLight 为 public Transform 时，它实际上是指向了一个游戏对象的位置、旋转和比例等信息，而不是游戏对象本身。
     * */
     public Transform FlashLight;
-    [HideInInspector]
-    public int batteryLevel = 5;
     private GameObject Road1;
     private GameObject Road1_1;
     private GameObject Road2;
@@ -23,6 +21,7 @@ public class FlashLightRe : MonoBehaviour
     private int CollidedRoad = 0;
     [HideInInspector]
     public bool fixedRoads = false;
+    public GameObject player;
 
     void Start()
     {
@@ -43,6 +42,7 @@ public class FlashLightRe : MonoBehaviour
         //中间的路（不需要collider）
         Road3 = new GameObject("Road3");
         InitializeRoad(Road3);
+
 
         //检查collider size
         Debug.Log("1:"+Road1.transform.localScale+ Road1collider.size);
@@ -69,14 +69,14 @@ public class FlashLightRe : MonoBehaviour
     void Update()
     {
         //按F键切换是否固定道路
-        if (Input.GetKeyDown(KeyCode.F) && batteryLevel > 0)
+        if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
         {
             fixedRoads = !fixedRoads;
 
-            if (fixedRoads)
+            if (fixedRoads == true)
             {
-                batteryLevel--;
-                Debug.Log("Current battery level: " + batteryLevel);
+                player.GetComponent<BatteryController>().batteryLevel--;
+                //Debug.Log(player.GetComponent<BatteryController>().batteryLevel);
             }
         }
 
