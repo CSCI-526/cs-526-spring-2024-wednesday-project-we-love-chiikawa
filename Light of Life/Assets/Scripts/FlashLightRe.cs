@@ -186,7 +186,13 @@ public class FlashLightRe : MonoBehaviour
                         Road.transform.position = new Vector2(midPoint.x, midPoint.y);
                         Road.transform.position += FlashLight.up * 0.5f;
                         BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
-                        Roadcollider.size = new Vector2(distance, 0.05f);
+                        SpriteRenderer spriteRenderer = Road.GetComponent<SpriteRenderer>();
+                        //colliderµÄsizeºÍoffset
+                        if (spriteRenderer != null && Roadcollider != null)
+                        {
+                            Roadcollider.size = spriteRenderer.size;
+                            Roadcollider.offset = spriteRenderer.bounds.center - Road.transform.position;
+                        }
                         break;
                     }
                 case 3:
