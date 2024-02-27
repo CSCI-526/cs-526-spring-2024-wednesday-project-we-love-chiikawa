@@ -29,14 +29,14 @@ public class FlashLightRe : MonoBehaviour
         Road1 = new GameObject("Road1");
         InitializeRoad(Road1);
         BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
-        Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
+        //Road1collider.size = new Vector2(1, 0.05f); // 初始大小，稍后会根据道路长度更新
         Road1.layer = LayerMask.NameToLayer("Ground");
 
         ////左边的路
         Road2 = new GameObject("Road2");
         InitializeRoad(Road2);
         BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();
-        Road2collider.size = new Vector2(0.05f, 0.05f);
+        //Road2collider.size = new Vector2(0.05f, 0.05f);
         Road2.layer = LayerMask.NameToLayer("Ground");
 
         //中间的路（不需要collider）
