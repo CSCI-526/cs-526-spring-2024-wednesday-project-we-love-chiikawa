@@ -16,7 +16,7 @@ public class Battery : MonoBehaviour
     void Update()
     {
         // Check if the player presses the "F" key
-        if (Input.GetKeyDown(KeyCode.F) && !flashlight.GetComponent<FlashLightRe>().fixedRoads)
+        if (Input.GetKeyDown(KeyCode.F) && flashlight.GetComponent<FlashLightRe>().fixedRoads)
         {
             // Check if battery level is not 0%
             if (currentBatteryLevel > 0)
