@@ -984,8 +984,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1190813181}
   - component: {fileID: 1190813182}
-  - component: {fileID: 1190813183}
   - component: {fileID: 1190813184}
+  - component: {fileID: 1190813185}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -1060,7 +1060,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190813183
+--- !u!114 &1190813184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1069,14 +1069,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190813180}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   FlashLight: {fileID: 1190813181}
   roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 1371416392}
---- !u!114 &1190813184
+--- !u!114 &1190813185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1085,11 +1083,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190813180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   FlashLight: {fileID: 1190813181}
   roadRenderer: {fileID: 0}
+  fixedRoads: 0
+  player: {fileID: 1371416392}
+  scriptName: FlashLightRe
 --- !u!1 &1371416392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8479847857283903535, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}

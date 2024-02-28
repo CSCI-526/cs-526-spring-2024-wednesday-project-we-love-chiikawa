@@ -56,6 +56,7 @@ public class RefractionEdge : MonoBehaviour
 
     void Update()
     {
+
         UpdateRoad(Road1, Road1_1);
         //UpdateRoad(Road2, Road2_1);
     }
