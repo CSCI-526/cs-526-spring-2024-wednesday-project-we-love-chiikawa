@@ -22,7 +22,7 @@ public class FlashLightRe : MonoBehaviour
     [HideInInspector]
     public bool fixedRoads = false;
     public GameObject player;
-
+    public string scriptName = "FlashLightRe";
     void Start()
     {
         //右边的路
@@ -68,6 +68,27 @@ public class FlashLightRe : MonoBehaviour
 
     void Update()
     {
+        //按K禁用脚本
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (Road3_1 != null) { Destroy(Road3_1); }
+            if (Road1 != null) { Destroy(Road1); }
+            if (Road2 != null) { Destroy(Road2); }
+            if (Road3 != null) { Destroy(Road3); }
+            if (Road1_1 != null) { Destroy(Road1_1); }
+            if (Road2_1 != null) { Destroy(Road2_1); }
+
+            MonoBehaviour scriptToDisable = GetComponent(scriptName) as MonoBehaviour;
+            if (scriptToDisable != null)
+            {
+                scriptToDisable.enabled = false;
+            }
+            else
+            {
+                Debug.LogError("Cannot find script named " + scriptName + " on GameObject: " + gameObject.name);
+            }
+        }
+
         //按F键切换是否固定道路
         if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
         {
