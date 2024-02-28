@@ -19,6 +19,7 @@ public class ReflectionEdge : MonoBehaviour
 
     void Start()
     {
+        //initial roads that player sees before reflection
         Road1 = new GameObject("Road1");
         InitializeRoad(Road1, 1);
         BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
@@ -41,10 +42,12 @@ public class ReflectionEdge : MonoBehaviour
         Road.transform.position = FlashLight.position;
         switch (dir)
         {
+            //for road 1
             case 1:
                 Road.transform.localScale = new Vector2(5.0f, 0.05f);
                 Road.transform.position -= FlashLight.up * 0.5f;
                 break;
+            //for road 2
             case 2:
                 Road.transform.localScale = new Vector2(4.0f, 0.05f);
                 Road.transform.position += FlashLight.up * 0.5f;
@@ -61,6 +64,7 @@ public class ReflectionEdge : MonoBehaviour
 
     void UpdateRoad(GameObject Road, GameObject NewRoad)
     {
+        //roads move by following mouse position
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
@@ -83,16 +87,22 @@ public class ReflectionEdge : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(flashlightPosition, FR_normalized, distance);
 
+        //has collision 
         if (hit.collider != null && !isColliding)
         {
             isColliding = true;
+
+            //metal is obstacle type = 1 
             if (hit.collider.gameObject.name.ToLower().Contains("metal"))
             {
                 ObstacleType = 1;
             }
+
             Vector2 hitPoint = hit.point;
+
             if (ObstacleType == 1)
             {
+                //reflected road1_1
                 Road1_1 = Instantiate(Road);
                 Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
                 Road1_1.transform.position = hitPoint;
@@ -101,6 +111,7 @@ public class ReflectionEdge : MonoBehaviour
                 Road1_1.transform.position += Road1_1.transform.right * 2.0f;
                 Road1_1.transform.position += Road1_1.transform.up * 0.05f;
 
+                //new road2_1
                 Road2_1 = Instantiate(Road2);
                 float lengthOfRoad1 = Road1.transform.localScale.x;
                 float Road2_1_length = lengthOfRoad1 - 1.5f;     
@@ -111,6 +122,7 @@ public class ReflectionEdge : MonoBehaviour
                 Road2_1.transform.right = FlashLight.right;
                 Road2_1.transform.position = (Vector2)Road2_1.transform.position + (Vector2)Road2_1.transform.right * Road2_1.transform.localScale.x * 0.5f;
 
+                //reflected road2_2
                 float lengthOfRoad1_1 = Road1_1.transform.localScale.x;
                 float Road2_2_length = lengthOfRoad1_1 * 0.6f;
                 Road2_2 = Instantiate(Road2);
