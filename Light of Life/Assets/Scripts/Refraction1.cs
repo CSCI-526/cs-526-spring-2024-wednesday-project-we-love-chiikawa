@@ -108,11 +108,19 @@ public class RefractionEdge : MonoBehaviour
                 // Calculate the direction in which Road1 is pointing based on its rotation
                 Vector2 roadDirection = new Vector2(Mathf.Cos(road1Rotation * Mathf.Deg2Rad), Mathf.Sin(road1Rotation * Mathf.Deg2Rad));
 
-                bool isPointingLeft = road1Rotation > 90 && road1Rotation < 270;
-                if (isPointingLeft)
+                bool isPointingRight = road1Rotation > 90 && road1Rotation < 270;
+                if (isPointingRight)
                 {
                     roadDirection = -roadDirection;
                 }
+
+                //when flashlight points to the left. How to fix? 
+                // bool isPointingLeft = road1Rotation < 90 && road1Rotation > 270;
+                // if (isPointingLeft)
+                // {
+                //     roadDirection = -roadDirection;
+                // }
+
 
                 // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
                 Vector2 roadEndPoint = road1Position + roadDirection * (road1Scale.x * 0.5f);
@@ -125,7 +133,7 @@ public class RefractionEdge : MonoBehaviour
 
                 // Adjust Road1_1's position to account for its pivot and length
                 Vector2 adjustment = new Vector2(Road1_1.transform.localScale.x * 0.5f, 0);
-                adjustment = isPointingLeft ? -adjustment : adjustment;
+                adjustment = isPointingRight ? -adjustment : adjustment;
                 Road1_1.transform.position = (Vector2) Road1_1.transform.position + adjustment;
 
 
@@ -138,8 +146,8 @@ public class RefractionEdge : MonoBehaviour
 
                 Vector2 roadDirection2 = new Vector2(Mathf.Cos(road2Rotation * Mathf.Deg2Rad), Mathf.Sin(road2Rotation * Mathf.Deg2Rad));
 
-                bool isPointingLeft2 = road2Rotation > 90 && road2Rotation < 270;
-                if (isPointingLeft2)
+                bool isPointingRight2 = road2Rotation > 90 && road2Rotation < 270;
+                if (isPointingRight2)
                 {
                     roadDirection2 = -roadDirection2;
                 }
@@ -152,7 +160,7 @@ public class RefractionEdge : MonoBehaviour
                 Road2_1.transform.rotation = Quaternion.Euler(0, 0, road2_1Roation);
 
                 Vector2 adjustment2 = new Vector2(Road2_1.transform.localScale.x * 0.5f, 0);
-                adjustment2 = isPointingLeft2 ? -adjustment2 : adjustment2;
+                adjustment2 = isPointingRight2 ? -adjustment2 : adjustment2;
                 Road2_1.transform.position = (Vector2) Road2_1.transform.position + adjustment;
 
             }
