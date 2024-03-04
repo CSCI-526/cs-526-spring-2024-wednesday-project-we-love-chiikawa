@@ -1,4 +1,11 @@
 using UnityEngine;
+using TMPro;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
+using Unity.Services.Analytics;
+using Unity.Services.Core;
+using System.Threading.Tasks;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -7,9 +14,24 @@ public class PlayerMovement : MonoBehaviour
     private float jumpingPower = 12f;
     private bool isFacingRight = true;
 
+    public TMP_Text winText; 
+
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+
+    async void Start()
+    {
+        try
+        {
+            await UnityServices.InitializeAsync();
+            AnalyticsService.Instance.StartDataCollection();
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
+    }
 
     void Update()
     {
@@ -46,6 +68,23 @@ public class PlayerMovement : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Finish")
+        {
+            winText.gameObject.SetActive(true);
+
+            CustomEvent myEvent = new CustomEvent("restartCounts")
+            {   
+                { "restart_count", PlayerPrefs.GetInt("RestartCount", 0) },
+            };
+            AnalyticsService.Instance.RecordEvent(myEvent);
+            AnalyticsService.Instance.Flush();
+
+            Debug.Log("Unity analytics triggered");
         }
     }
 }
