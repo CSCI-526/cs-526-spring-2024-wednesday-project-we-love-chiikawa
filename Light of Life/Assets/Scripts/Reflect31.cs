@@ -19,8 +19,7 @@ public class Reflect31 : MonoBehaviour
     public bool fixedRoads = false;
     public GameObject player;
     public bool isCollidingWithPlayer;
-    //public string scriptName = "FlashLightRe";
-    // Start is called before the first frame update
+
     void Start()
     {
         Road1 = new GameObject("Road1");
@@ -88,17 +87,17 @@ public class Reflect31 : MonoBehaviour
     void ExpandR1(GameObject Road)
     {
         Destroy(Road1_1);
+        //求鼠标位置
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
         Vector2 FM = flashlightPosition - mousePosition;
-        // 计算FM在Fu上的投影的大小
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
-        //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
+        //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
         {
             Road.transform.localScale = new Vector2(Road2.transform.localScale.x - 1.5f, 0.05f);
@@ -130,7 +129,8 @@ public class Reflect31 : MonoBehaviour
             }
             return;
         }
-        //未碰撞
+
+        //R1和R2均未碰撞
         if (!isColliding || distance < lastSafeDistance)
         {
             //更新Road尺寸
@@ -149,7 +149,7 @@ public class Reflect31 : MonoBehaviour
             lastSafeDistance = distance;
         }
 
-        //如果碰撞了，而且装的不是player
+        //R1先撞了
         RaycastHit2D hit1;
         Vector2 offset = (Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
@@ -203,7 +203,7 @@ public class Reflect31 : MonoBehaviour
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
 
-        //R2未碰撞,但R1碰撞
+        //R1先撞上了，更新R2和R2_1
         if (Colliding1 == true)
         {
             Road.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.5f, 0.05f);
@@ -260,7 +260,8 @@ public class Reflect31 : MonoBehaviour
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
         hit2 = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
         Debug.DrawLine(adjustedPosition, adjustedPosition + FR_normalized * distance, Color.green, duration: 20.0f);
-        //如果碰撞了，而且装的不是player
+        
+        //R2先撞了，R1没撞
         if (hit2.collider != null)
         {
             isColliding = true;
