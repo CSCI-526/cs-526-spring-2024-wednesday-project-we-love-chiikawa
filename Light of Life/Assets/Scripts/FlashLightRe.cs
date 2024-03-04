@@ -271,7 +271,7 @@ public class FlashLightRe : MonoBehaviour
             //×²µÄ²£Á§
             else if(hit.collider.gameObject.name.ToLower().Contains("glass"))
             {
-                    Vector2 road1Position = Road.transform.position;
+                Vector2 road1Position = Road.transform.position;
                 Vector2 road1Scale = Road.transform.localScale;
                 float road1Rotation = Road.transform.eulerAngles.z;
                 float road1_1Roation = 0;
