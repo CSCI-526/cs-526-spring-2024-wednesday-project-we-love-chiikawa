@@ -77,8 +77,10 @@ public class PlayerMovement : MonoBehaviour
         {
             winText.gameObject.SetActive(true);
 
+            Time.timeScale = 0f;
+
             CustomEvent myEvent = new CustomEvent("restartCounts")
-            {   
+            {
                 { "restart_count", PlayerPrefs.GetInt("RestartCount", 0) },
             };
             AnalyticsService.Instance.RecordEvent(myEvent);

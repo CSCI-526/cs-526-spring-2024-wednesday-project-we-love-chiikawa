@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         restartCount = PlayerPrefs.GetInt("RestartCount", 0);
+        Time.timeScale = 1f;
     }
 
     public void RestartLevel()
@@ -17,11 +18,13 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("RestartCount", restartCount);
         PlayerPrefs.Save();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
     }
     public void ResetRestartCount()
     {
         PlayerPrefs.SetInt("RestartCount", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
     }
 
     public void PauseGame()
