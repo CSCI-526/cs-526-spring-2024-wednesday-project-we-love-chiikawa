@@ -1,5 +1,7 @@
+
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,6 +21,8 @@ public class Reflect31 : MonoBehaviour
     public bool fixedRoads = false;
     public GameObject player;
     public bool isCollidingWithPlayer;
+    public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
+    private Vector2 lastPosition; // 上一帧的位置
 
     void Start()
     {
@@ -36,6 +40,7 @@ public class Reflect31 : MonoBehaviour
     void InitializeRoad(GameObject Road)
     {
         // 创建Road，并添加组件
+        Road.transform.localScale = new Vector2(0, 0);
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
@@ -87,15 +92,18 @@ public class Reflect31 : MonoBehaviour
     void ExpandR1(GameObject Road)
     {
         Destroy(Road1_1);
-        //求鼠标位置
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
         Vector2 FM = flashlightPosition - mousePosition;
+        // 计算FM在Fu上的投影的大小
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
+        //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
+
+
 
         //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
@@ -201,7 +209,6 @@ public class Reflect31 : MonoBehaviour
         //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
-
 
         //R1先撞上了，更新R2和R2_1
         if (Colliding1 == true)
