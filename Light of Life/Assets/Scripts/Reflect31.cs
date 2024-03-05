@@ -112,7 +112,7 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road1_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
@@ -220,7 +220,7 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road2_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
