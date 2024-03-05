@@ -87,7 +87,7 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road1_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 0.5f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
@@ -193,7 +193,7 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road2_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 0.5f);
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
@@ -247,27 +247,27 @@ public class Reflect31 : MonoBehaviour
         //R2撞了 更新R2和R2_1
         else if (hit2.collider != null)
         {
-            //isColliding = true;
-            //Colliding2 = true;
-            //Destroy(Road2_1);
+            isColliding = true;
+            Colliding2 = true;
+            Destroy(Road2_1);
 
-            //Vector2 road2Position = Road.transform.position;
-            //Vector2 road2Scale = Road.transform.localScale;
-            //float road2Rotation = Road.transform.eulerAngles.z;
-            //// Calculate the direction in which Road1 is pointing based on its rotation
-            //Vector2 roadDirection = new Vector2(Mathf.Cos(road2Rotation * Mathf.Deg2Rad), Mathf.Sin(road2Rotation * Mathf.Deg2Rad));
+            Vector2 road2Position = Road.transform.position;
+            Vector2 road2Scale = Road.transform.localScale;
+            float road2Rotation = Road.transform.eulerAngles.z;
+            // Calculate the direction in which Road1 is pointing based on its rotation
+            Vector2 roadDirection = new Vector2(Mathf.Cos(road2Rotation * Mathf.Deg2Rad), Mathf.Sin(road2Rotation * Mathf.Deg2Rad));
 
-            //// Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
-            //Vector2 roadEndPoint = road2Position + roadDirection * (road2Scale.x * 0.5f);
+            // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
+            Vector2 roadEndPoint = road2Position + roadDirection * (road2Scale.x * 0.5f);
 
-            //// Instantiate Road1_1 and set its properties
-            //Road2_1 = Instantiate(Road);
-            //Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
-            //Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
-            //float roadRotation = Road.transform.eulerAngles.z;
-            //// 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
-            //Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
-            //Road2_1.transform.position += Road2_1.transform.right * 2.5f;
+            // Instantiate Road1_1 and set its properties
+            Road2_1 = Instantiate(Road);
+            Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
+            float roadRotation = Road.transform.eulerAngles.z;
+            // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
+            Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
+            Road2_1.transform.position += Road2_1.transform.right * 2.5f;
 
         }
 
