@@ -19,6 +19,7 @@ public class Refraction2 : MonoBehaviour
     public bool isCollidingWithPlayer;
     private float lastSafeDistance = 0f;
     private int ObstacleType = 0;
+    private Vector2 lastPosition;
 
     void Start()
     {
@@ -103,10 +104,11 @@ public class Refraction2 : MonoBehaviour
     void UpdateRoad1(GameObject Road, GameObject NewRoad)
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
-        Vector2 FM = flashlightPosition - mousePosition;
+        Vector2 FM = flashlightPosition - lastPosition;
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
 
         if (!isColliding1 || distance < lastSafeDistance)
@@ -169,10 +171,11 @@ public class Refraction2 : MonoBehaviour
     void UpdateRoad2(GameObject Road, GameObject NewRoad)
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
-        Vector2 FM = flashlightPosition - mousePosition;
+        Vector2 FM = flashlightPosition - lastPosition;
         float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
 
         if (!isColliding2 || distance < lastSafeDistance){
