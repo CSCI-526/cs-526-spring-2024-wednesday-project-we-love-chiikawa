@@ -379,11 +379,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.01
+      value: -5.33
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.11
+      value: -4.2
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1353,8 +1353,6 @@ GameObject:
   m_Component:
   - component: {fileID: 516044053}
   - component: {fileID: 516044057}
-  - component: {fileID: 516044056}
-  - component: {fileID: 516044055}
   - component: {fileID: 516044054}
   - component: {fileID: 516044058}
   m_Layer: 0
@@ -1396,37 +1394,7 @@ MonoBehaviour:
   fixedRoads: 0
   player: {fileID: 364448272}
   isCollidingWithPlayer: 0
---- !u!114 &516044055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516044052}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 516044053}
-  roadRenderer: {fileID: 0}
---- !u!114 &516044056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516044052}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 516044053}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 0}
-  scriptName: FlashLightRe
+  maxChangePerFrame: 0.5
 --- !u!212 &516044057
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1998,8 +1966,8 @@ GameObject:
   m_Component:
   - component: {fileID: 769165736}
   - component: {fileID: 769165739}
-  - component: {fileID: 769165738}
-  - component: {fileID: 769165737}
+  - component: {fileID: 769165741}
+  - component: {fileID: 769165740}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -2022,37 +1990,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1897255823}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.388}
---- !u!114 &769165737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 769165735}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 769165736}
-  roadRenderer: {fileID: 0}
---- !u!114 &769165738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 769165735}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 769165736}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 0}
-  scriptName: FlashLightRe
 --- !u!212 &769165739
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2105,6 +2042,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &769165740
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769165735}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -30, y: 0.1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 50, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &769165741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769165735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 769165736}
+  roadRenderer: {fileID: 0}
+  isCollidingWithPlayer: 0
 --- !u!1 &799548808
 GameObject:
   m_ObjectHideFlags: 0
@@ -2987,9 +2985,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1190813181}
   - component: {fileID: 1190813182}
-  - component: {fileID: 1190813183}
-  - component: {fileID: 1190813184}
-  - component: {fileID: 1190813186}
   - component: {fileID: 1190813187}
   - component: {fileID: 1190813188}
   m_Layer: 0
@@ -3066,51 +3061,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190813183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 0}
-  scriptName: FlashLightRe
---- !u!114 &1190813184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
---- !u!114 &1190813186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37560b58dade64944a0d1c144cfdb2f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
 --- !u!114 &1190813187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3126,8 +3076,9 @@ MonoBehaviour:
   FlashLight: {fileID: 1190813181}
   roadRenderer: {fileID: 0}
   fixedRoads: 0
-  player: {fileID: 0}
+  player: {fileID: 364448272}
   isCollidingWithPlayer: 0
+  maxChangePerFrame: 0.5
 --- !u!61 &1190813188
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3817,9 +3768,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1604165115}
   - component: {fileID: 1604165118}
-  - component: {fileID: 1604165117}
-  - component: {fileID: 1604165116}
   - component: {fileID: 1604165119}
+  - component: {fileID: 1604165120}
   m_Layer: 0
   m_Name: Surface3
   m_TagString: Untagged
@@ -3842,37 +3792,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1661969549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.388}
---- !u!114 &1604165116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604165114}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1604165115}
-  roadRenderer: {fileID: 0}
---- !u!114 &1604165117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604165114}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1604165115}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 0}
-  scriptName: FlashLightRe
 --- !u!212 &1604165118
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3934,14 +3853,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 1604165114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba118609557f1544f89098d7050f9740, type: 3}
+  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
   FlashLight: {fileID: 1604165115}
   roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 0}
   isCollidingWithPlayer: 0
+--- !u!61 &1604165120
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604165114}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -30, y: 0.1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 50, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1616695585
 GameObject:
   m_ObjectHideFlags: 0
