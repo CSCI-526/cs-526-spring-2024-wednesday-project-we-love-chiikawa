@@ -112,24 +112,27 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road1_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
         Vector2 FM = flashlightPosition - lastPosition;//
         // 计算FM在Fu上的投影的大小
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
+        //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 4.0f;
+        if (distance < 0) { distance = 0.0f; }
         //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
-        //R1先撞了
+
         RaycastHit2D hit1;
         Vector2 offset = (Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
         hit1 = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
         Debug.DrawLine(adjustedPosition, adjustedPosition + FR_normalized * distance, Color.green, duration: 20.0f);
 
+        Debug.Log("dist" + distance);
 
         //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
@@ -164,6 +167,7 @@ public class Reflect31 : MonoBehaviour
             return;
         }
 
+        //R1先撞上了
         else if (hit1.collider != null)
         {
             isColliding = true;
@@ -186,6 +190,9 @@ public class Reflect31 : MonoBehaviour
             // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
             Road1_1.transform.position += Road1_1.transform.right * 2.5f;
+
+            Debug.Log("R1 R1_1" + Road.transform.localScale);
+            Debug.Log("R_1" + Road1_1.transform.localScale);
         }
 
         //R1和R2均未碰撞
@@ -220,18 +227,20 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road2_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 2.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
         Vector2 FM = flashlightPosition - lastPosition;//
         // 计算FM在Fu上的投影的大小
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized));
+        //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized))-4.0f;
+        if (distance < 0) { distance = 0.0f; }
         //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
-
+        Debug.Log("distance"+distance);
         RaycastHit2D hit2;
         Vector2 offset = -(Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
@@ -271,32 +280,37 @@ public class Reflect31 : MonoBehaviour
             return;
         }
 
-            //R2先撞了，R1没撞
-            else if (hit2.collider != null)
-            {
-                isColliding = true;
-                Colliding2 = true;
-                Destroy(Road2_1);
+        //R2先撞了，R1没撞
+        else if (hit2.collider != null)
+        {
+            isColliding = true;
+            Colliding2 = true;
+            Destroy(Road2_1);
+            Debug.Log("R2撞了");
+            Vector2 road1Position = Road.transform.position;
+            Vector2 road1Scale = Road.transform.localScale;
+            float road1Rotation = Road.transform.eulerAngles.z;
+            // Calculate the direction in which Road1 is pointing based on its rotation
+            Vector2 roadDirection = new Vector2(Mathf.Cos(road1Rotation * Mathf.Deg2Rad), Mathf.Sin(road1Rotation * Mathf.Deg2Rad));
 
-                Vector2 road1Position = Road.transform.position;
-                Vector2 road1Scale = Road.transform.localScale;
-                float road1Rotation = Road.transform.eulerAngles.z;
-                // Calculate the direction in which Road1 is pointing based on its rotation
-                Vector2 roadDirection = new Vector2(Mathf.Cos(road1Rotation * Mathf.Deg2Rad), Mathf.Sin(road1Rotation * Mathf.Deg2Rad));
+            // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
+            Vector2 roadEndPoint = road1Position + roadDirection * (road1Scale.x * 0.5f);
 
-                // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
-                Vector2 roadEndPoint = road1Position + roadDirection * (road1Scale.x * 0.5f);
+            // Instantiate Road1_1 and set its properties
+            Road2_1 = Instantiate(Road);
+            Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
+            float roadRotation = Road.transform.eulerAngles.z;
+            // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
+            Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
+            Road2_1.transform.position += Road2_1.transform.right * 2.5f;
 
-                // Instantiate Road1_1 and set its properties
-                Road2_1 = Instantiate(Road);
-                Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
-                Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
-                float roadRotation = Road.transform.eulerAngles.z;
-                // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
-                Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
-                Road2_1.transform.position += Road2_1.transform.right * 2.5f;
+            Debug.Log(Road.transform.position);
+            Debug.Log(Road.transform.localScale);
+            Debug.Log(Road2_1.transform.position);
+            Debug.Log(Road2_1.transform.localScale);
 
-            }
+        }
 
             //R2未碰撞,R1也未碰撞
             else 
