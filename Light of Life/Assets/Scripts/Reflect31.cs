@@ -88,6 +88,8 @@ public class Reflect31 : MonoBehaviour
                 if (fixedRoads == true)
                 {
                     player.GetComponent<BatteryController>().batteryLevel--;
+                    PlayerPrefs.SetInt("EnergyUsedCount", PlayerPrefs.GetInt("EnergyUsedCount", 0) + 1);
+                    //Debug.Log(PlayerPrefs.GetInt("EnergyUsedCount", 0));
                 }
             }
             if (!fixedRoads)
@@ -132,7 +134,7 @@ public class Reflect31 : MonoBehaviour
         hit1 = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
         Debug.DrawLine(adjustedPosition, adjustedPosition + FR_normalized * distance, Color.green, duration: 20.0f);
 
-        Debug.Log("dist" + distance);
+        //Debug.Log("dist" + distance);
 
         //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
@@ -191,8 +193,8 @@ public class Reflect31 : MonoBehaviour
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
             Road1_1.transform.position += Road1_1.transform.right * 2.5f;
 
-            Debug.Log("R1 R1_1" + Road.transform.localScale);
-            Debug.Log("R_1" + Road1_1.transform.localScale);
+            //Debug.Log("R1 R1_1" + Road.transform.localScale);
+            //Debug.Log("R_1" + Road1_1.transform.localScale);
         }
 
         //R1和R2均未碰撞
@@ -240,7 +242,7 @@ public class Reflect31 : MonoBehaviour
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
-        Debug.Log("distance"+distance);
+        //Debug.Log("distance"+distance);
         RaycastHit2D hit2;
         Vector2 offset = -(Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
@@ -286,7 +288,7 @@ public class Reflect31 : MonoBehaviour
             isColliding = true;
             Colliding2 = true;
             Destroy(Road2_1);
-            Debug.Log("R2撞了");
+            //Debug.Log("R2撞了");
             Vector2 road1Position = Road.transform.position;
             Vector2 road1Scale = Road.transform.localScale;
             float road1Rotation = Road.transform.eulerAngles.z;

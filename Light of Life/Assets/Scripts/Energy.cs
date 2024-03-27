@@ -8,7 +8,6 @@ public class Energy : MonoBehaviour
     // This method is called when another collider enters the trigger
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Trigger enters!");
         // Check if the collider belongs to the player (you might need to adjust the tag or layer)
         if (other.CompareTag("Player"))
         {

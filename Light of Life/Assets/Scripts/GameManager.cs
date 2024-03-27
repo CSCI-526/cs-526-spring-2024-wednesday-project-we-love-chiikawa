@@ -20,9 +20,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }
-    public void ResetRestartCount()
+    public void ResetLevel()
     {
         PlayerPrefs.SetInt("RestartCount", 0);
+        PlayerPrefs.SetInt("EnergyUsedCount", 0);
+        PlayerPrefs.SetInt("DeathCount", 0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1f;
     }

@@ -6,6 +6,7 @@ using Unity.Services.Analytics;
 using Unity.Services.Core;
 using System.Threading.Tasks;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private float speed = 8f;
     private float jumpingPower = 12f;
     private bool isFacingRight = true;
-    public TMP_Text winText; 
+    public TMP_Text winText;
+    public TMP_Text failText;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -78,14 +80,31 @@ public class PlayerMovement : MonoBehaviour
 
             Time.timeScale = 0f;
 
-            CustomEvent myEvent = new CustomEvent("restartCounts")
+            CustomEvent levelStatistics = new CustomEvent("levelStatistics")
             {
+                { "level_name", SceneManager.GetActiveScene().name },
+                { "energy_used_count", PlayerPrefs.GetInt("EnergyUsedCount", 0) },
+                { "death_count", PlayerPrefs.GetInt("DeathCount", 0) },
                 { "restart_count", PlayerPrefs.GetInt("RestartCount", 0) },
             };
-            AnalyticsService.Instance.RecordEvent(myEvent);
-            AnalyticsService.Instance.Flush();
 
-            Debug.Log("Unity analytics triggered");
+            AnalyticsService.Instance.RecordEvent(levelStatistics);
+            AnalyticsService.Instance.Flush();
+        }
+        else if (collision.tag == "Enemy")
+        {
+            failText.gameObject.SetActive(true);
+            PlayerPrefs.SetInt("DeathCount", PlayerPrefs.GetInt("DeathCount", 0) + 1);
+
+            Time.timeScale = 0f;
+
+            CustomEvent deathToSpike = new CustomEvent("deathToSpike")
+            {
+                { "level_name", SceneManager.GetActiveScene().name },
+                { "spike_name", collision.name },
+            };
+            AnalyticsService.Instance.RecordEvent(deathToSpike);
+            AnalyticsService.Instance.Flush();
         }
     }
 

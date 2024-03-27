@@ -91,7 +91,8 @@ public class FlashLightRe : MonoBehaviour
             if (fixedRoads == true)
             {
                 player.GetComponent<BatteryController>().batteryLevel--;
-                //Debug.Log(player.GetComponent<BatteryController>().batteryLevel);
+                PlayerPrefs.SetInt("EnergyUsedCount", PlayerPrefs.GetInt("EnergyUsedCount", 0) + 1);
+                Debug.Log(PlayerPrefs.GetInt("EnergyUsedCount", 0));
             }
         }
 
