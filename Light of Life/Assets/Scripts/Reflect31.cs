@@ -121,7 +121,7 @@ public class Reflect31 : MonoBehaviour
         Vector2 FM = flashlightPosition - lastPosition;//
         // 计算FM在Fu上的投影的大小
         //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 4.0f;
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 0.0f;
         if (distance < 0) { distance = 0.0f; }
         //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
@@ -236,7 +236,7 @@ public class Reflect31 : MonoBehaviour
         Vector2 FM = flashlightPosition - lastPosition;//
         // 计算FM在Fu上的投影的大小
         //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized))-4.0f;
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized))-0.0f;
         if (distance < 0) { distance = 0.0f; }
         //计算投影点N的坐标
         Vector2 N = flashlightPosition + FR_normalized * distance;
