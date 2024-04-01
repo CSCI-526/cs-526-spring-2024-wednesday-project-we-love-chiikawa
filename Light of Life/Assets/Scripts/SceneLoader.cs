@@ -8,11 +8,6 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("Home");
     }
 
-    public void LoadGuideScene()
-    {
-        SceneManager.LoadScene("Guide");
-    }
-
     public void LoadLevelScene()
     {
         SceneManager.LoadScene("TutorialLevel");
