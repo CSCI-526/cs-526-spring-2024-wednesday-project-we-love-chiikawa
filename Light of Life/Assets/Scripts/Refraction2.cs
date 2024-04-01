@@ -16,6 +16,7 @@ public class Refraction2 : MonoBehaviour
     private float lastSafeDistance = 0f;
     private int ObstacleType = 0;
     private Vector2 lastPosition;
+    private GameObject lastHitGlass = null;
 
     void Start()
     {
@@ -133,6 +134,7 @@ public class Refraction2 : MonoBehaviour
             Vector2 hitPoint = hit.point;
 
             if (ObstacleType == 2){
+
                 Vector2 road1Position = Road1.transform.position;
                 Vector2 road1Scale = Road1.transform.localScale;
                 float road1Rotation = Road1.transform.eulerAngles.z;
@@ -156,6 +158,9 @@ public class Refraction2 : MonoBehaviour
                 Vector2 adjustment = new Vector2(Road1_1.transform.localScale.x * 0.5f, 0);
                 adjustment = isPointingRight ? -adjustment : adjustment;
                 Road1_1.transform.position = (Vector2) Road1_1.transform.position + adjustment;
+
+                lastHitGlass = hit.collider.gameObject;
+                SetGlassRigidbodyType(hit.collider.gameObject, RigidbodyType2D.Dynamic);
             }
             ObstacleType = 0;
         }
@@ -163,6 +168,11 @@ public class Refraction2 : MonoBehaviour
             Destroy(Road1_1);
             isColliding1 = false;
             lastSafeDistance = Mathf.Infinity;
+            if (lastHitGlass != null)
+            {
+                SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+                lastHitGlass = null; 
+            }
         }
     }
 
@@ -227,6 +237,9 @@ public class Refraction2 : MonoBehaviour
                 adjustment2 = isPointingRight2 ? -adjustment2 : adjustment2;
                 Road2_1.transform.position = (Vector2) Road2_1.transform.position + adjustment2;
 
+                lastHitGlass = hit.collider.gameObject;
+                SetGlassRigidbodyType(hit.collider.gameObject, RigidbodyType2D.Dynamic);
+
             }
             ObstacleType = 0;
         }
@@ -235,6 +248,20 @@ public class Refraction2 : MonoBehaviour
             Destroy(Road2_1);
             isColliding2 = false;
             lastSafeDistance = Mathf.Infinity;
+            if (lastHitGlass != null)
+            {
+                SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+                lastHitGlass = null; 
+            }
+        }
+    }
+
+    void SetGlassRigidbodyType(GameObject glass, RigidbodyType2D type)
+    {
+        Rigidbody2D rb = glass.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = type;
         }
     }
 }
