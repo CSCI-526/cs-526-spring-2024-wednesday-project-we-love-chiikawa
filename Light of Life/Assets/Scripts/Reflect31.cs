@@ -23,6 +23,7 @@ public class Reflect31 : MonoBehaviour
     public bool isCollidingWithPlayer;
     public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
     private Vector2 lastPosition; // 上一帧的位置
+    private Vector2 currentVelocity = Vector2.zero;
 
     void Start()
     {
@@ -37,6 +38,7 @@ public class Reflect31 : MonoBehaviour
         Road2.layer = LayerMask.NameToLayer("Ground");
 
         fixedRoads = false;
+        lastPosition = new Vector2(FlashLight.position.x, FlashLight.position.y);
     }
     void InitializeRoad(GameObject Road)
     {
@@ -114,36 +116,36 @@ public class Reflect31 : MonoBehaviour
     {
         Destroy(Road1_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        // 计算当前鼠标速度
+        if (lastPosition != Vector2.zero)
+        {
+            currentVelocity = (mousePosition - lastPosition) / Time.deltaTime;
+        }
+        // 动态调整平滑因子，基于速度的大小
+        float smoothingFactor = Mathf.Clamp(1 / (1 + currentVelocity.magnitude * 150), 0.005f, 1.0f);
+        // 使用平滑因子动态更新 lastPosition
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, smoothingFactor);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
-        Vector2 FM = flashlightPosition - lastPosition;//
-        // 计算FM在Fu上的投影的大小
-        //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 4.0f;
-        if (distance < 0) { distance = 0.0f; }
-        //计算投影点N的坐标
+        Vector2 FM = flashlightPosition - lastPosition;
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 0.0f;
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
-
-        RaycastHit2D hit1;
+        RaycastHit2D hit;
         Vector2 offset = (Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
-        hit1 = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
+        hit = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
         Debug.DrawLine(adjustedPosition, adjustedPosition + FR_normalized * distance, Color.green, duration: 20.0f);
-
-        //Debug.Log("dist" + distance);
 
         //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
         {
-            Road.transform.localScale = new Vector2(Road2.transform.localScale.x - 1.5f, 0.05f);
+            Road.transform.localScale = new Vector2(Road2.transform.localScale.x - 1.8f, 0.05f);
             Road.transform.position = new Vector2(Road2.transform.position.x, Road2.transform.position.y);
-            Road.transform.position -= Road.transform.up * 0.5f;
-            Road.transform.position -= Road.transform.right * 0.75f;
-            Road.transform.position -= FlashLight.up * 0.5f;
+            Road.transform.position -= Road.transform.up * 1.0f;
+            Road.transform.position -= Road.transform.right * 0.9f;
             BoxCollider2D Road1collider = Road1.GetComponent<BoxCollider2D>();
             SpriteRenderer sprite1Renderer = Road1.GetComponent<SpriteRenderer>();
             if (sprite1Renderer != null && Road1collider != null)
@@ -169,32 +171,26 @@ public class Reflect31 : MonoBehaviour
             return;
         }
 
-        //R1先撞上了
-        else if (hit1.collider != null)
+        //R1先撞上了,生成R1_1
+        else if (hit.collider != null)
         {
             isColliding = true;
             Colliding1 = true;
             Destroy(Road1_1);
-
-            Vector2 road1Position = Road.transform.position;
-            Vector2 road1Scale = Road.transform.localScale;
-            float road1Rotation = Road.transform.eulerAngles.z;
-            Vector2 roadDirection = new Vector2(Mathf.Cos(road1Rotation * Mathf.Deg2Rad), Mathf.Sin(road1Rotation * Mathf.Deg2Rad));
-
+            Vector2 roadPosition = Road.transform.position;
+            Vector2 roadScale = Road.transform.localScale;
+            float roadRotation = Road.transform.eulerAngles.z;
+            Vector2 roadDirection = new Vector2(Mathf.Cos(roadRotation * Mathf.Deg2Rad), Mathf.Sin(roadRotation * Mathf.Deg2Rad));
             // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
-            Vector2 roadEndPoint = road1Position + roadDirection * (road1Scale.x * 0.5f);
+            Vector2 roadEndPoint = roadPosition + roadDirection * (roadScale.x * 0.5f);
 
             // Instantiate Road1_1 and set its properties
             Road1_1 = Instantiate(Road);
             Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
             Road1_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
-            float roadRotation = Road.transform.eulerAngles.z;
             // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
             Road1_1.transform.position += Road1_1.transform.right * 2.5f;
-
-            //Debug.Log("R1 R1_1" + Road.transform.localScale);
-            //Debug.Log("R_1" + Road1_1.transform.localScale);
         }
 
         //R1和R2均未碰撞
@@ -213,7 +209,6 @@ public class Reflect31 : MonoBehaviour
                 Road1collider.size = spriteRenderer.size;
                 Road1collider.offset = spriteRenderer.bounds.center - Road.transform.position;
             }
-            lastSafeDistance = distance;
 
             isColliding = false;
             Colliding1 = false;
@@ -222,41 +217,45 @@ public class Reflect31 : MonoBehaviour
         }
 
     }
-       
+
 
 
     void ExpandR2(GameObject Road)
     {
         Destroy(Road2_1);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        lastPosition = Vector2.Lerp(lastPosition, mousePosition, Time.deltaTime * 1.0f);//鼠标移动太快会检测不到碰撞，所以需要减慢一下
+        // 计算当前鼠标速度
+        if (lastPosition != Vector2.zero)
+        {
+            currentVelocity = (mousePosition - lastPosition) / Time.deltaTime;
+        }
+        // 动态调整平滑因子，基于速度的大小
+        float smoothingFactor = Mathf.Clamp(1 / (1 + currentVelocity.magnitude * 150), 0.005f, 1.0f);
+        // 使用平滑因子动态更新 lastPosition
+        lastPosition = Vector2.Lerp(lastPosition, mousePosition, smoothingFactor);
         Vector2 flashlightRight = new Vector2(FlashLight.right.x, FlashLight.right.y);
         Vector2 FR_normalized = flashlightRight.normalized;
         Vector2 flashlightPosition = FlashLight.position;
-        Vector2 FM = flashlightPosition - lastPosition;//
-        // 计算FM在Fu上的投影的大小
-        //感觉distance在第一帧会有问题，实在不知道为啥过长，直接-4了（粗暴的解决）
-        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized))-4.0f;
-        if (distance < 0) { distance = 0.0f; }
-        //计算投影点N的坐标
+        Vector2 FM = flashlightPosition - lastPosition;
+        float distance = Mathf.Abs(Vector2.Dot(FM, FR_normalized)) - 0.0f;
         Vector2 N = flashlightPosition + FR_normalized * distance;
         Vector2 midPoint = (N + flashlightPosition) / 2f;
 
-        //Debug.Log("distance"+distance);
-        RaycastHit2D hit2;
+        RaycastHit2D hit;
         Vector2 offset = -(Vector2)FlashLight.transform.up * 0.4f; // 偏移量
         Vector2 adjustedPosition = flashlightPosition - offset; // 应用偏移量
-        hit2 = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
+        hit = Physics2D.Raycast(adjustedPosition, FR_normalized, distance);
         Debug.DrawLine(adjustedPosition, adjustedPosition + FR_normalized * distance, Color.green, duration: 20.0f);
 
-            //R1先撞上了，更新R2和R2_1
+        //R1先撞上了，更新R2和R2_1
         if (Colliding1 == true)
         {
-            Road.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.5f, 0.05f);
+            //更新R2  
+            Road.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.8f, 0.05f);
             Road.transform.position = new Vector2(Road1.transform.position.x, Road1.transform.position.y);
-            Road.transform.position += Road.transform.up * 0.5f;
-            Road.transform.position -= Road.transform.right * 0.75f;
-            Road.transform.position += FlashLight.up * 0.5f;
+            //R2在R1的上面
+            Road.transform.position += Road.transform.up * 1.0f;
+            Road.transform.position -= Road.transform.right * 0.9f;
             BoxCollider2D Road2collider = Road2.GetComponent<BoxCollider2D>();
             SpriteRenderer sprite2Renderer = Road2.GetComponent<SpriteRenderer>();
             if (sprite2Renderer != null && Road2collider != null)
@@ -269,7 +268,7 @@ public class Reflect31 : MonoBehaviour
             Vector2 roadEndPoint = (Vector2)Road.transform.position + roadDirection * (Road.transform.localScale.x * 0.5f);
             Road2_1 = Instantiate(Road);
             Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
-            Road2_1.transform.position = roadEndPoint; 
+            Road2_1.transform.position = roadEndPoint;
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, Road.transform.eulerAngles.z + 120f); //这个角度是相对x轴而言的角度
             Road2_1.transform.position += Road2_1.transform.right * 2.5f;
             BoxCollider2D Road2_1collider = Road2_1.GetComponent<BoxCollider2D>();
@@ -282,59 +281,50 @@ public class Reflect31 : MonoBehaviour
             return;
         }
 
-        //R2先撞了，R1没撞
-        else if (hit2.collider != null)
+        //R2先撞了，生成R2_1
+        else if (hit.collider != null)
         {
             isColliding = true;
             Colliding2 = true;
             Destroy(Road2_1);
-            //Debug.Log("R2撞了");
-            Vector2 road1Position = Road.transform.position;
-            Vector2 road1Scale = Road.transform.localScale;
-            float road1Rotation = Road.transform.eulerAngles.z;
-            // Calculate the direction in which Road1 is pointing based on its rotation
-            Vector2 roadDirection = new Vector2(Mathf.Cos(road1Rotation * Mathf.Deg2Rad), Mathf.Sin(road1Rotation * Mathf.Deg2Rad));
 
-            // Since Road1 is centered on its pivot, you need to move half its length to get to the tip, assuming it's horizontal
-            Vector2 roadEndPoint = road1Position + roadDirection * (road1Scale.x * 0.5f);
+            Vector2 roadPosition = Road.transform.position;
+            Vector2 roadScale = Road.transform.localScale;
+            float roadRotation = Road.transform.eulerAngles.z;
+            Vector2 roadDirection = new Vector2(Mathf.Cos(roadRotation * Mathf.Deg2Rad), Mathf.Sin(roadRotation * Mathf.Deg2Rad));
+            Vector2 roadEndPoint = roadPosition + roadDirection * (roadScale.x * 0.5f);
 
             // Instantiate Road1_1 and set its properties
             Road2_1 = Instantiate(Road);
             Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
             Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
-            float roadRotation = Road.transform.eulerAngles.z;
             // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
             Road2_1.transform.position += Road2_1.transform.right * 2.5f;
 
-            Debug.Log(Road.transform.position);
-            Debug.Log(Road.transform.localScale);
-            Debug.Log(Road2_1.transform.position);
-            Debug.Log(Road2_1.transform.localScale);
-
         }
 
-            //R2未碰撞,R1也未碰撞
-            else 
+        //R2未碰撞,R1也未碰撞
+        else
         {
             //更新Road尺寸
             Road.transform.localScale = new Vector2(distance, 0.05f);
             //更新Road坐标和Collider尺寸
             Road.transform.position = new Vector2(midPoint.x, midPoint.y);
             Road.transform.position += FlashLight.up * 0.5f;
-            BoxCollider2D Roadcollider = Road.GetComponent<BoxCollider2D>();
+            BoxCollider2D Road1collider = Road.GetComponent<BoxCollider2D>();
             SpriteRenderer spriteRenderer = Road.GetComponent<SpriteRenderer>();
             //collider的size和offset
-            if (spriteRenderer != null && Roadcollider != null)
+            if (spriteRenderer != null && Road1collider != null)
             {
-                Roadcollider.size = spriteRenderer.size;
-                Roadcollider.offset = spriteRenderer.bounds.center - Road.transform.position;
+                Road1collider.size = spriteRenderer.size;
+                Road1collider.offset = spriteRenderer.bounds.center - Road.transform.position;
             }
-            lastSafeDistance = distance;
+
             isColliding = false;
             Colliding2 = false;
             lastSafeDistance = 0f;
             Destroy(Road2_1);
-            }
+        }
     }
 }
