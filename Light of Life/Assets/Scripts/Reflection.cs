@@ -17,29 +17,28 @@ public class Reflect31 : MonoBehaviour
     private bool isColliding = false;//if is colliding, road stop growing
     private bool Colliding1 = false;
     private bool Colliding2 = false;
-    private float lastSafeDistance = 0f; // 记录上一次安全的（未碰撞的）距离。作用是让射线碰到障碍物后，还能缩短继续改变长度
     public bool fixedRoads = false;
     public GameObject player;
     public bool isCollidingWithPlayer;
     public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
     private Vector2 lastPosition; // 上一帧的位置
     private Vector2 currentVelocity = Vector2.zero;
+    private float lastSafeDistance = 0f; // 上一次安全距离
 
     void Start()
     {
         Road1 = new GameObject("Road1");
         InitializeRoad(Road1);
-        //BoxCollider2D Road1collider = Road1.AddComponent<BoxCollider2D>();
         Road1.layer = LayerMask.NameToLayer("Ground");
 
         Road2 = new GameObject("Road2");
         InitializeRoad(Road2);
-        //BoxCollider2D Road2collider = Road2.AddComponent<BoxCollider2D>();
         Road2.layer = LayerMask.NameToLayer("Ground");
 
         fixedRoads = false;
         lastPosition = new Vector2(FlashLight.position.x, FlashLight.position.y);
     }
+
     void InitializeRoad(GameObject Road)
     {
         // 创建Road，并添加组件
@@ -50,12 +49,9 @@ public class Reflect31 : MonoBehaviour
         roadRenderer.color = Color.yellow;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
 
-        //方向
-
+        //方向,positon
         Road.transform.up = FlashLight.up;
-
         Road.transform.position = FlashLight.position;
-
         BoxCollider2D roadCollider = Road.AddComponent<BoxCollider2D>();
         roadCollider.size = new Vector2(1, 0.05f);
         roadCollider.enabled = false;
