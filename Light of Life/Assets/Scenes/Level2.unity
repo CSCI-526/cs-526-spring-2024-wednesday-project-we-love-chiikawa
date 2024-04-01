@@ -485,11 +485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.88
+      value: -2.37
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.47
+      value: -6.34
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2959,7 +2959,7 @@ Transform:
   m_GameObject: {fileID: 951261202}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.31, y: 0.46999997, z: 0}
+  m_LocalPosition: {x: -3.72, y: 2.63, z: 0}
   m_LocalScale: {x: 4.6779857, y: 0.36135414, z: 0.96464}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3348,7 +3348,7 @@ GameObject:
   - component: {fileID: 1119442766}
   - component: {fileID: 1119442765}
   - component: {fileID: 1119442764}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlassPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
