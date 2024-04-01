@@ -62,7 +62,7 @@ public class Refraction2 : MonoBehaviour
         Road.transform.up = FlashLight.up;
 
         BoxCollider2D roadCollider = Road.AddComponent<BoxCollider2D>();
-        roadCollider.size = new Vector2(1, 0.05f);
+        roadCollider.size = new Vector2(1, 0.1f);
         roadCollider.enabled = false;
         
     }
