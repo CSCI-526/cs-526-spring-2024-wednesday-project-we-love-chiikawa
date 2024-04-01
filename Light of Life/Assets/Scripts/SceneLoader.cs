@@ -15,6 +15,6 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadLevelScene()
     {
-        SceneManager.LoadScene("levelDesignTest");
+        SceneManager.LoadScene("TutorialLevel");
     }
 }
