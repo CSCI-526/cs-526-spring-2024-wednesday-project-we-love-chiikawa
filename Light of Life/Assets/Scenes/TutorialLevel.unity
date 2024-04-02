@@ -562,6 +562,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4293225710780279306, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
+      propertyPath: batteryLevel
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6893020598459910064, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: winText
       value: 
