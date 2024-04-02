@@ -153,10 +153,10 @@ public class Reflect31 : MonoBehaviour
             Vector2 roadDirection = new Vector2(Mathf.Cos(Road.transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(Road.transform.eulerAngles.z * Mathf.Deg2Rad));
             Vector2 roadEndPoint = (Vector2)Road.transform.position + roadDirection * (Road.transform.localScale.x * 0.5f);
             Road1_1 = Instantiate(Road);
-            Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road1_1.transform.localScale = new Vector2(3.0f, 0.05f);
             Road1_1.transform.position = roadEndPoint;
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, Road.transform.eulerAngles.z - 120f);
-            Road1_1.transform.position += Road1_1.transform.right * 2.5f;
+            Road1_1.transform.position += Road1_1.transform.right * 1.5f;
             BoxCollider2D Road1_1collider = Road1_1.GetComponent<BoxCollider2D>();
             SpriteRenderer sprite1_1Renderer = Road1_1.GetComponent<SpriteRenderer>();
             if (sprite1_1Renderer != null && Road1_1collider != null)
@@ -182,11 +182,11 @@ public class Reflect31 : MonoBehaviour
 
             // Instantiate Road1_1 and set its properties
             Road1_1 = Instantiate(Road);
-            Road1_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road1_1.transform.localScale = new Vector2(3.0f, 0.05f);
             Road1_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
             // 将 Road1_1 的旋转角度设置为 Road 的旋转角度逆时针转 120度
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
-            Road1_1.transform.position += Road1_1.transform.right * 2.5f;
+            Road1_1.transform.position += Road1_1.transform.right * 1.5f;
         }
 
         //R1和R2均未碰撞
@@ -263,10 +263,10 @@ public class Reflect31 : MonoBehaviour
             Vector2 roadDirection = new Vector2(Mathf.Cos(Road.transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(Road.transform.eulerAngles.z * Mathf.Deg2Rad));
             Vector2 roadEndPoint = (Vector2)Road.transform.position + roadDirection * (Road.transform.localScale.x * 0.5f);
             Road2_1 = Instantiate(Road);
-            Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road2_1.transform.localScale = new Vector2(3.0f, 0.05f);
             Road2_1.transform.position = roadEndPoint;
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, Road.transform.eulerAngles.z + 120f); //这个角度是相对x轴而言的角度
-            Road2_1.transform.position += Road2_1.transform.right * 2.5f;
+            Road2_1.transform.position += Road2_1.transform.right * 1.5f;
             BoxCollider2D Road2_1collider = Road2_1.GetComponent<BoxCollider2D>();
             SpriteRenderer sprite2_1Renderer = Road2_1.GetComponent<SpriteRenderer>();
             if (sprite2_1Renderer != null && Road2_1collider != null)
@@ -292,11 +292,11 @@ public class Reflect31 : MonoBehaviour
 
             // Instantiate Road1_1 and set its properties
             Road2_1 = Instantiate(Road);
-            Road2_1.transform.localScale = new Vector2(5.0f, 0.05f);
+            Road2_1.transform.localScale = new Vector2(3.0f, 0.05f);
             Road2_1.transform.position = roadEndPoint; // Initially set position to Road1's endpoint
             // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
-            Road2_1.transform.position += Road2_1.transform.right * 2.5f;
+            Road2_1.transform.position += Road2_1.transform.right * 1.5f;
 
         }
 
