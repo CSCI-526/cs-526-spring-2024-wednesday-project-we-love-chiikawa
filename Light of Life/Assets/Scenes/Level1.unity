@@ -550,6 +550,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4293225710780279306, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
+      propertyPath: batteryLevel
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6893020598459910064, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: winText
       value: 
@@ -1219,7 +1223,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.191542
+  orthographic size: 7.8317084
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
