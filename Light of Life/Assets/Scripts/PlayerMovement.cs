@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
+    private float speed = 6f;
     private float jumpingPower = 8f;
     private bool isFacingRight = true;
     public TMP_Text winText;

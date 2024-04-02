@@ -2298,7 +2298,7 @@ Transform:
   m_GameObject: {fileID: 1079986260}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.027637, y: -2.2677982, z: -0.07037068}
+  m_LocalPosition: {x: 1.4, y: -2.19, z: -0.07037068}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2559,19 +2559,16 @@ GameObject:
   m_Component:
   - component: {fileID: 1190813181}
   - component: {fileID: 1190813182}
-  - component: {fileID: 1190813183}
-  - component: {fileID: 1190813184}
-  - component: {fileID: 1190813185}
   - component: {fileID: 1190813186}
-  - component: {fileID: 1190813187}
   - component: {fileID: 1190813188}
+  - component: {fileID: 1190813189}
   m_Layer: 0
   m_Name: Surface1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1190813181
 Transform:
   m_ObjectHideFlags: 0
@@ -2639,49 +2636,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190813183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874621da5e6b16a4295ecfe723ab70ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 1371416392}
-  scriptName: FlashLightRe
---- !u!114 &1190813184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0137ca6bf3c453f9c9c09110caf5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
---- !u!114 &1190813185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56657ca7051714843aabfe3aa768156d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1190813186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2694,26 +2648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37560b58dade64944a0d1c144cfdb2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
---- !u!114 &1190813187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190813180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba118609557f1544f89098d7050f9740, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashLight: {fileID: 1190813181}
-  roadRenderer: {fileID: 0}
-  fixedRoads: 0
-  player: {fileID: 1371416392}
-  isCollidingWithPlayer: 0
-  maxChangePerFrame: 0.5
 --- !u!61 &1190813188
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2759,6 +2693,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1190813189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190813180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  FlashLight: {fileID: 0}
+  roadRenderer: {fileID: 0}
+  isCollidingWithPlayer: 0
 --- !u!1 &1295970466
 GameObject:
   m_ObjectHideFlags: 0
@@ -4122,7 +4072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1897255823
 Transform:
   m_ObjectHideFlags: 0
@@ -4131,8 +4081,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897255822}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029026972, y: 0.9965986, z: -0.008906825, w: 0.07661144}
-  m_LocalPosition: {x: -1.0325419, y: -2.033638, z: 0.029130254}
+  m_LocalRotation: {x: -0.013534592, y: 0.08742611, z: 0.02717924, w: 0.99570817}
+  m_LocalPosition: {x: 2.2, y: -2.04, z: -0.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4140,7 +4090,7 @@ Transform:
   - {fileID: 1174241692}
   - {fileID: 769165736}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0.762, y: 171.186, z: -3.395}
+  m_LocalEulerAnglesHint: {x: -1.817, y: 9.989, z: 2.968}
 --- !u!1001 &1905688173
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4155,11 +4105,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.68
+      value: 0.38
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.11
+      value: -4.15
       objectReference: {fileID: 0}
     - target: {fileID: 2272647037933011368, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_LocalPosition.z

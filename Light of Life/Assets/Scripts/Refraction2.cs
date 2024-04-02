@@ -152,7 +152,7 @@ public class Refraction2 : MonoBehaviour
                 BoxCollider2D road1_1Collider = Road1_1.GetComponent<BoxCollider2D>();
                 road1_1Collider.enabled = false;
 
-                Road1_1.transform.localScale = new Vector2(5.0f, 0.05f); 
+                Road1_1.transform.localScale = new Vector2(3.0f, 0.05f); 
                 Road1_1.transform.position = roadEndPoint; 
                 Road1_1.transform.rotation = Quaternion.Euler(0, 0, road1_1Roation);
                 Vector2 adjustment = new Vector2(Road1_1.transform.localScale.x * 0.5f, 0);
@@ -229,7 +229,7 @@ public class Refraction2 : MonoBehaviour
                 BoxCollider2D road2_1Collider = Road2_1.GetComponent<BoxCollider2D>();
                 road2_1Collider.enabled = false;
 
-                Road2_1.transform.localScale = new Vector2(5.0f, 0.05f); 
+                Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
                 Road2_1.transform.position = roadEndPoint2; 
                 Road2_1.transform.rotation = Quaternion.Euler(0, 0, road2_1Roation);
 
