@@ -11,8 +11,12 @@ public class Glass : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Collision with player detected.");
+        }
         // 检查碰撞是否是由玩家引起的
-        if (!collision.gameObject.CompareTag(playerTag))
+        else
         {
             Debug.Log("Collision with non-player object detected.");
 
@@ -38,21 +42,28 @@ public class Glass : MonoBehaviour
         }
     }
 
-    // 在两个碰撞点之间禁用 collider
     void DisableColliderBetweenPoints()
     {
         // 如果有两个碰撞点
         if (collisionPoint1 != Vector2.zero && collisionPoint2 != Vector2.zero)
         {
-            // 计算两点之间的中点
-            Vector2 midpoint = (collisionPoint1 + collisionPoint2) / 2f;
+            // 计算两点之间的矩形区域范围
+            Vector2 minPoint = Vector2.Min(collisionPoint1, collisionPoint2);
+            Vector2 maxPoint = Vector2.Max(collisionPoint1, collisionPoint2);
 
-            // 禁用中点的 collider
-            Collider2D[] colliders = Physics2D.OverlapPointAll(midpoint);
+            // 检查这个区域内是否有 collider
+            Collider2D[] colliders = Physics2D.OverlapAreaAll(minPoint, maxPoint);
             foreach (Collider2D collider in colliders)
             {
-                collider.enabled = false;
+                if (!collider.enabled)
+                {
+                    Debug.Log("Collider between points is disabled.");
+                }
             }
+
+            // 输出这两个点的位置
+            Debug.Log("Collision point 1: " + collisionPoint1);
+            Debug.Log("Collision point 2: " + collisionPoint2);
         }
     }
 
