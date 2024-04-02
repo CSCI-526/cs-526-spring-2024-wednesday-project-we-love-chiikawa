@@ -526,11 +526,11 @@ PrefabInstance:
     - target: {fileID: 6893020598459910064, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: winText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1994968989}
     - target: {fileID: 6893020598459910064, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: failText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 215070588}
     - target: {fileID: 7470941269463976292, guid: 9df5ac098b5bbc14ebcc9b8db4399f6b, type: 3}
       propertyPath: m_Layer
       value: 2
