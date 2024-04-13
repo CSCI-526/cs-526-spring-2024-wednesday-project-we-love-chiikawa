@@ -8,9 +8,14 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("Home");
     }
 
-    public void LoadLevelScene()
+    public void LoadTutorial1()
     {
-        SceneManager.LoadScene("TutorialLevel");
+        SceneManager.LoadScene("TutorialLevel1");
+    }
+
+    public void LoadTutorial2()
+    {
+        SceneManager.LoadScene("TutorialLevel2");
     }
 
     public void LoadLevel1()
@@ -21,5 +26,10 @@ public class SceneLoader : MonoBehaviour
     public void LoadLevel2()
     {
         SceneManager.LoadScene("Level2");
+    }
+
+    public void LoadLevel()
+    {
+        SceneManager.LoadScene("Level");
     }
 }
