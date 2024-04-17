@@ -17,6 +17,7 @@ public class Refraction3 : MonoBehaviour
     private bool roadsAreFixed = false;
     private GameObject lastHitGlass = null;
     private bool roadsFixed = false;
+    public float expandSpeed = 10.0f;
 
     void Start()
     {
@@ -149,12 +150,11 @@ void Update()
             }
             else
             {
-                length += 0.1f;
+                length += expandSpeed * Time.deltaTime; // Using expandSpeed to control the extension rate
                 road.transform.localScale = new Vector2(length, 0.1f);
                 road.transform.position = roadBasePosition + (direction * (length / 2));
 
-
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.01f / expandSpeed); // Faster extension as expandSpeed increases
             }
         }
     }
@@ -191,10 +191,11 @@ void Update()
             }
             else
             {
-                length += 0.1f;
+                length += expandSpeed * Time.deltaTime; // Using expandSpeed to control the extension rate
                 road.transform.localScale = new Vector2(length, 0.1f);
                 road.transform.position = roadBasePosition + (direction * (length / 2));
-                yield return new WaitForSeconds(0.05f);
+
+                yield return new WaitForSeconds(0.01f / expandSpeed); // Faster extension as expandSpeed increases
             }
         }
     }

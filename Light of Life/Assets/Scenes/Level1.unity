@@ -1019,8 +1019,8 @@ GameObject:
   m_Component:
   - component: {fileID: 230173172}
   - component: {fileID: 230173175}
-  - component: {fileID: 230173174}
   - component: {fileID: 230173173}
+  - component: {fileID: 230173176}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -1088,22 +1088,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &230173174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230173171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 230173172}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &230173175
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1156,6 +1140,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &230173176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230173171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 230173172}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1 &235046638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,7 +1724,7 @@ GameObject:
   - component: {fileID: 465116784}
   - component: {fileID: 465116783}
   - component: {fileID: 465116782}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GlassPlatform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,8 +2127,8 @@ GameObject:
   m_Component:
   - component: {fileID: 503321276}
   - component: {fileID: 503321279}
-  - component: {fileID: 503321278}
   - component: {fileID: 503321277}
+  - component: {fileID: 503321280}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -2190,22 +2196,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &503321278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503321275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 503321276}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &503321279
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2258,6 +2248,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &503321280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503321275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 503321276}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1 &522493433
 GameObject:
   m_ObjectHideFlags: 0
@@ -5259,7 +5271,7 @@ GameObject:
   - component: {fileID: 1098658165}
   - component: {fileID: 1098658164}
   - component: {fileID: 1098658163}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GlassPlatform (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5417,7 +5429,7 @@ GameObject:
   - component: {fileID: 1119442766}
   - component: {fileID: 1119442765}
   - component: {fileID: 1119442764}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GlassPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6566,8 +6578,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1339368508}
   - component: {fileID: 1339368513}
-  - component: {fileID: 1339368510}
   - component: {fileID: 1339368509}
+  - component: {fileID: 1339368514}
   m_Layer: 0
   m_Name: Surface3
   m_TagString: Untagged
@@ -6635,22 +6647,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1339368510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339368507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 1339368508}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &1339368513
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6703,6 +6699,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1339368514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339368507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 1339368508}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1 &1340540236
 GameObject:
   m_ObjectHideFlags: 0

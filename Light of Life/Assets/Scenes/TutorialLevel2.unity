@@ -634,8 +634,8 @@ GameObject:
   m_Component:
   - component: {fileID: 113821620}
   - component: {fileID: 113821623}
-  - component: {fileID: 113821622}
   - component: {fileID: 113821621}
+  - component: {fileID: 113821624}
   m_Layer: 0
   m_Name: Surface3
   m_TagString: Untagged
@@ -703,22 +703,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &113821622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113821619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 113821620}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &113821623
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -771,6 +755,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &113821624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113821619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 113821620}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1 &151715615
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,8 +1878,8 @@ GameObject:
   m_Component:
   - component: {fileID: 236458939}
   - component: {fileID: 236458942}
-  - component: {fileID: 236458941}
   - component: {fileID: 236458940}
+  - component: {fileID: 236458943}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -1941,22 +1947,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &236458941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 236458938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 236458939}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &236458942
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2009,6 +1999,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &236458943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236458938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 236458939}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1 &251075434
 GameObject:
   m_ObjectHideFlags: 0
@@ -5545,7 +5557,7 @@ GameObject:
   - component: {fileID: 1119442766}
   - component: {fileID: 1119442765}
   - component: {fileID: 1119442764}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GlassPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10351,8 +10363,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2119354414}
   - component: {fileID: 2119354417}
-  - component: {fileID: 2119354416}
   - component: {fileID: 2119354415}
+  - component: {fileID: 2119354418}
   m_Layer: 0
   m_Name: Surface
   m_TagString: Untagged
@@ -10420,22 +10432,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2119354416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2119354413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cb8d7d3857c47999b9088b83ce7d0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 364448272}
-  FlashLight: {fileID: 2119354414}
-  roadRenderer: {fileID: 0}
-  isCollidingWithPlayer: 0
 --- !u!212 &2119354417
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10488,6 +10484,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2119354418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119354413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fe97654ba4bee99265a860dbddb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 364448272}
+  FlashLight: {fileID: 2119354414}
+  flashlightLength: 1
+  roadVerticalOffset: -0.5
+  isCollidingWithPlayer: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  roadRenderer: {fileID: 0}
+  expandSpeed: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
