@@ -56,7 +56,6 @@ public class Refraction2 : MonoBehaviour
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.yellow;
-        roadRenderer.sortingOrder = 1; 
         
         Road.transform.position = FlashLight.position;     
         Road.transform.up = FlashLight.up;
