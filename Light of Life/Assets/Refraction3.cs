@@ -49,25 +49,25 @@ public class Refraction3 : MonoBehaviour
         
     }
 
-void Update()
-{
-    if (isCollidingWithPlayer)
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
+        if (isCollidingWithPlayer)
         {
-            roadsAreFixed = !roadsAreFixed;
-            ShowRoad(true);
-            FixRoadsInPlace();
-
-            if (roadsAreFixed && player.GetComponent<BatteryController>().batteryLevel > 0)
+            if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
             {
-                player.GetComponent<BatteryController>().batteryLevel--;
-            }
-        
-        }
-    }
+                roadsAreFixed = !roadsAreFixed;
+                ShowRoad(true);
+                FixRoadsInPlace();
 
-}
+                if (roadsAreFixed && player.GetComponent<BatteryController>().batteryLevel > 0)
+                {
+                    player.GetComponent<BatteryController>().batteryLevel--;
+                }
+            
+            }
+        }
+
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -97,16 +97,14 @@ void Update()
             }
         }
         if(!roadsAreFixed && lastHitGlass != null)
-    {
-        SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+        {
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+        }
+        if(roadsAreFixed && lastHitGlass != null)
+        {
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
+        }
     }
-    if(roadsAreFixed && lastHitGlass != null)
-    {
-        SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
-    }
-    }
-
-
 
     void StartExtendingRoad1()
     {
@@ -262,10 +260,12 @@ void Update()
         road2_1Collider.enabled = false;
 
         //Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
-        if (!isPointingLeft2){
+        if (!isPointingLeft2)
+        {
             Road2_1.transform.localScale = new Vector2(3.2f, 0.05f); 
         }
-        else{
+        else
+        {
             Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
         }
 
@@ -277,7 +277,6 @@ void Update()
         Road2_1.transform.position = (Vector2) Road2_1.transform.position + adjustment2;
 
     }
-
 
 
 void ShowRoad(bool visible)
@@ -302,8 +301,6 @@ void ShowRoad(bool visible)
         }
     }
 }
-
-
 
 
 void FixRoadsInPlace()
