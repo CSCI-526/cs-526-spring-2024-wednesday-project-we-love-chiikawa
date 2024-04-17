@@ -24,11 +24,11 @@ public class newReflection : MonoBehaviour
     {
         Road1 = new GameObject("Road1");
         InitializeRoad(Road1);
-        //Road1.layer = LayerMask.NameToLayer("Ground");
+        Road1.layer = LayerMask.NameToLayer("Ground");
 
         Road2 = new GameObject("Road2");
         InitializeRoad(Road2);
-        //Road2.layer = LayerMask.NameToLayer("Ground");
+        Road2.layer = LayerMask.NameToLayer("Ground");
 
         fixedRoads = false;
     }

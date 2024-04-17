@@ -3455,7 +3455,7 @@ Transform:
   m_GameObject: {fileID: 740143761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.72, y: -0.16, z: 0}
+  m_LocalPosition: {x: -4.12, y: -0.19, z: 0}
   m_LocalScale: {x: 4.6779857, y: 0.36135414, z: 0.96464}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4426,6 +4426,7 @@ GameObject:
   - component: {fileID: 1106377691}
   - component: {fileID: 1106377690}
   - component: {fileID: 1106377689}
+  - component: {fileID: 1106377692}
   m_Layer: 0
   m_Name: Surface2
   m_TagString: Untagged
@@ -4500,7 +4501,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106377687}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba118609557f1544f89098d7050f9740, type: 3}
   m_Name: 
@@ -4563,6 +4564,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1106377692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106377687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c842c4e2119fae4e8361893425b4b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlashLight: {fileID: 1106377688}
+  roadRenderer: {fileID: 0}
+  fixedRoads: 0
+  player: {fileID: 364448272}
+  isCollidingWithPlayer: 0
+  maxChangePerFrame: 0.5
+  expandSpeed: 10
 --- !u!1 &1124803415
 GameObject:
   m_ObjectHideFlags: 0
@@ -4590,7 +4610,7 @@ Transform:
   m_GameObject: {fileID: 1124803415}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.52, y: 3.47, z: -17.33428}
+  m_LocalPosition: {x: 0.95, y: 3.47, z: -17.33428}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5052,6 +5072,7 @@ GameObject:
   - component: {fileID: 1190813182}
   - component: {fileID: 1190813187}
   - component: {fileID: 1190813188}
+  - component: {fileID: 1190813189}
   m_Layer: 0
   m_Name: Surface1
   m_TagString: Untagged
@@ -5133,7 +5154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190813180}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba118609557f1544f89098d7050f9740, type: 3}
   m_Name: 
@@ -5189,6 +5210,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 50, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1190813189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190813180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c842c4e2119fae4e8361893425b4b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlashLight: {fileID: 1190813181}
+  roadRenderer: {fileID: 1190813182}
+  fixedRoads: 0
+  player: {fileID: 364448272}
+  isCollidingWithPlayer: 0
+  maxChangePerFrame: 0.5
+  expandSpeed: 10
 --- !u!1 &1253081789
 GameObject:
   m_ObjectHideFlags: 0
@@ -5905,7 +5945,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 6.4866, y: 0.7394879}
+  m_Offset: {x: 8.224342, y: 0.72059935}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5916,7 +5956,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.85691833, y: 1.0369744}
+  m_Size: {x: 0.9324746, y: 1.0747515}
   m_EdgeRadius: 0
 --- !u!4 &1481907867
 Transform:
@@ -6124,9 +6164,10 @@ GameObject:
   - component: {fileID: 1634124305}
   - component: {fileID: 1634124308}
   - component: {fileID: 1634124307}
+  - component: {fileID: 1634124309}
   - component: {fileID: 1634124306}
   m_Layer: 0
-  m_Name: Surface2
+  m_Name: Surface3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6199,7 +6240,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634124304}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba118609557f1544f89098d7050f9740, type: 3}
   m_Name: 
@@ -6262,6 +6303,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1634124309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634124304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c842c4e2119fae4e8361893425b4b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlashLight: {fileID: 1634124305}
+  roadRenderer: {fileID: 0}
+  fixedRoads: 0
+  player: {fileID: 364448272}
+  isCollidingWithPlayer: 0
+  maxChangePerFrame: 0.5
+  expandSpeed: 10
 --- !u!1 &1648452551
 GameObject:
   m_ObjectHideFlags: 0
@@ -6434,7 +6494,7 @@ Transform:
   m_GameObject: {fileID: 1670276042}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.54, y: 3.48, z: -17.33428}
+  m_LocalPosition: {x: 1.9699998, y: 3.48, z: -17.33428}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8380,7 +8440,7 @@ Transform:
   m_GameObject: {fileID: 2005056964}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.54, y: 0.716, z: 0}
+  m_LocalPosition: {x: 8.25, y: 0.68, z: 0}
   m_LocalScale: {x: 0.19885592, y: 0.19885592, z: 0.19885592}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8981,7 +9041,7 @@ Transform:
   m_GameObject: {fileID: 2132438586}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.02, y: 3.48, z: -17.33428}
+  m_LocalPosition: {x: 1.4499998, y: 3.48, z: -17.33428}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
