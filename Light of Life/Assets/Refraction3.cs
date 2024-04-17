@@ -29,7 +29,7 @@ public class Refraction3 : MonoBehaviour
         InitializeRoad(Road2);
         Road2.layer = LayerMask.NameToLayer("Ground");
 
-        //roadsAreFixed = false;
+
     }
 
     void InitializeRoad(GameObject Road)
@@ -150,11 +150,11 @@ void Update()
             }
             else
             {
-                length += expandSpeed * Time.deltaTime; // Using expandSpeed to control the extension rate
+                length += expandSpeed * Time.deltaTime;
                 road.transform.localScale = new Vector2(length, 0.1f);
                 road.transform.position = roadBasePosition + (direction * (length / 2));
 
-                yield return new WaitForSeconds(0.01f / expandSpeed); // Faster extension as expandSpeed increases
+                yield return new WaitForSeconds(0.01f / expandSpeed); 
             }
         }
     }
@@ -195,7 +195,7 @@ void Update()
                 road.transform.localScale = new Vector2(length, 0.1f);
                 road.transform.position = roadBasePosition + (direction * (length / 2));
 
-                yield return new WaitForSeconds(0.01f / expandSpeed); // Faster extension as expandSpeed increases
+                yield return new WaitForSeconds(0.01f / expandSpeed); 
             }
         }
     }
@@ -263,7 +263,6 @@ void Update()
         adjustment2 = isPointingLeft2 ? -adjustment2 : adjustment2;
         Road2_1.transform.position = (Vector2) Road2_1.transform.position + adjustment2;
 
-        //SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
     }
 
 
@@ -273,24 +272,20 @@ void ShowRoad(bool visible)
     if (Road1 != null)
     {
         Road1.SetActive(visible);
-        //Road1_1.SetActive(visible);
-        // Destroy the extended road if the main road is being hidden
         if (Road1_1 != null && !visible)
         {
             Destroy(Road1_1);
-            Road1_1 = null; // Clear the reference
+            Road1_1 = null; 
         }
     }
 
     if (Road2 != null)
     {
         Road2.SetActive(visible);
-        //Road2_1.SetActive(visible);
-        // Destroy the extended road if the main road is being hidden
         if (Road2_1 != null && !visible)
         {
             Destroy(Road2_1);
-            Road2_1 = null; // Clear the reference
+            Road2_1 = null; 
         }
     }
 }
@@ -305,30 +300,27 @@ void FixRoadsInPlace()
 
     // Enable colliders for all 4 roads
     ToggleColliders(Road1, true);
-    if (Road1_1 != null) ToggleColliders(Road1_1, true); // Check for null in case the road hasn't been initialized
+    if (Road1_1 != null) ToggleColliders(Road1_1, true); 
     ToggleColliders(Road2, true);
-    if (Road2_1 != null) ToggleColliders(Road2_1, true); // Check for null in case the road hasn't been initialized
+    if (Road2_1 != null) ToggleColliders(Road2_1, true); 
 
-    // Ensure the roads are visible
     ShowRoad(true);
 }
 
 void ToggleColliders(GameObject road, bool state)
 {
-    if (road != null) // Check if the road object is not null
+    if (road != null)
     {
         BoxCollider2D collider = road.GetComponent<BoxCollider2D>();
-        if (collider != null) // Check if the road has a collider component
+        if (collider != null) 
         {
-            collider.enabled = state; // Enable or disable the collider based on the 'state' parameter
+            collider.enabled = state; 
         }
     }
 }
 
     void SetGlassRigidbodyType(GameObject glass, RigidbodyType2D type)
     {
-        Debug.Log("Inside setGlass. Glass is " + glass);
-        Debug.Log("Inside setGlass. Glass rb is " + glass.GetComponent<Rigidbody2D>());
         Rigidbody2D rb = glass.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
