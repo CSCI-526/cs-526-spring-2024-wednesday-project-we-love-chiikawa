@@ -1,24 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class newReflection : MonoBehaviour
+public class NEWReflection : MonoBehaviour
 {
+    public GameObject player;
     public Transform FlashLight;
+    public float flashlightLength = 1.0f;
+    public float roadVerticalOffset = -0.5f;
     private GameObject Road1;
     private GameObject Road1_1;
     private GameObject Road2;
     private GameObject Road2_1;
+    public bool isCollidingWithPlayer;
+    public LayerMask obstacleLayer;
     public SpriteRenderer roadRenderer;
+
+    private bool roadsAreFixed = false;
+    private GameObject lastHitGlass = null;
+    private bool roadsFixed = false;
+    public float expandSpeed = 10.0f;
     private bool isColliding = false;//if is colliding, road stop growing
     private bool Colliding1 = false;
     private bool Colliding2 = false;
     public bool fixedRoads = false;
-    public GameObject player;
-    public bool isCollidingWithPlayer;
     public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
-    public float expandSpeed = 10.0f;
 
     void Start()
     {
@@ -30,105 +36,183 @@ public class newReflection : MonoBehaviour
         InitializeRoad(Road2);
         Road2.layer = LayerMask.NameToLayer("Ground");
 
-        fixedRoads = false;
+
     }
 
     void InitializeRoad(GameObject Road)
     {
-        // 创建Road，并添加组件
         Road.transform.localScale = new Vector2(0, 0);
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
         roadRenderer.color = Color.yellow;
-        roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
 
-        //方向,positon
-        Road.transform.up = FlashLight.up;
         Road.transform.position = FlashLight.position;
+        Road.transform.up = FlashLight.up;
+
         BoxCollider2D roadCollider = Road.AddComponent<BoxCollider2D>();
-        roadCollider.size = new Vector2(1, 0.05f);
+        roadCollider.size = new Vector2(1, 0.1f);
         roadCollider.enabled = false;
+
     }
-    
-    //碰到手电筒
+
+    void Update()
+    {
+        if (isCollidingWithPlayer)
+        {
+            if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
+            {
+                roadsAreFixed = !roadsAreFixed;
+                ShowRoad(true);
+                FixRoadsInPlace();
+
+                if (roadsAreFixed && player.GetComponent<BatteryController>().batteryLevel > 0)
+                {
+                    player.GetComponent<BatteryController>().batteryLevel--;
+                }
+
+            }
+        }
+
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
-
-            Road1.GetComponent<BoxCollider2D>().enabled = true;
-            Road2.GetComponent<BoxCollider2D>().enabled = true;
-            if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = true;
-            if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = true; 
-
-            Road1.GetComponent<SpriteRenderer>().enabled = true;
-            Road2.GetComponent<SpriteRenderer>().enabled = true;
-            if (Road1_1) Road1_1.GetComponent<SpriteRenderer>().enabled = true;
-            if (Road2_1) Road2_1.GetComponent<SpriteRenderer>().enabled = true;
+            ShowRoad(true);
+            if (!roadsAreFixed)
+            {
+                StartExtendingRoad1();
+                StartExtendingRoad2();
+            }
         }
     }
 
-    //离开手电筒
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            if(fixedRoads==false)
+            isCollidingWithPlayer = false;
+            if (!roadsAreFixed)
             {
-                isCollidingWithPlayer = false;
 
-                Road1.GetComponent<BoxCollider2D>().enabled = false;
-                Road2.GetComponent<BoxCollider2D>().enabled = false;
-                if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = false;
-                if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = false;
-
-                Road1.GetComponent<SpriteRenderer>().enabled = false;
-                Road2.GetComponent<SpriteRenderer>().enabled = false;
-                if (Road1_1) Road1_1.GetComponent<SpriteRenderer>().enabled = false;
-                if (Road2_1) Road2_1.GetComponent<SpriteRenderer>().enabled = false;
+                ShowRoad(false);
             }
-            
-        }
-    }
+            else
+            {
+                ShowRoad(true);
 
-    void Update()
-    {
-        //如果player撞到Flashlight
-        if (isCollidingWithPlayer)
+            }
+        }
+        if (!roadsAreFixed && lastHitGlass != null)
         {
-            if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
-            {
-                fixedRoads = !fixedRoads;
-                ToggleColliders(fixedRoads);
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+        }
+        if (roadsAreFixed && lastHitGlass != null)
+        {
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
+        }
+    }
 
-                if (fixedRoads == true)
-                {
-                    player.GetComponent<BatteryController>().batteryLevel--;
-                    PlayerPrefs.SetInt("EnergyUsedCount", PlayerPrefs.GetInt("EnergyUsedCount", 0) + 1);
-                    //Debug.Log(PlayerPrefs.GetInt("EnergyUsedCount", 0));
-                }
-            }
-            if (fixedRoads==false)
-            {
-                ExpandR1(Road1);
-                ExpandR2(Road2);
-            }
+
+
+    void StartExtendingRoad1()
+    {
+
+        StartCoroutine(ExtendRoad1(Road1, FlashLight.right.normalized, flashlightLength));
+    }
+
+    void StartExtendingRoad2()
+    {
+        StartCoroutine(ExtendRoad2(Road2, FlashLight.right.normalized, -flashlightLength));
+    }
+
+    System.Collections.IEnumerator ExtendRoad1(GameObject road, Vector2 direction, float verticalOffset)
+    {
+        float length = 0;
+        bool hitWall = false;
+        Vector2 roadBasePosition = (Vector2)FlashLight.position + (Vector2)FlashLight.up * flashlightLength;
+
+        float road1RotationNow = Road1.transform.eulerAngles.z;
+        bool isPointingLeftNow = road1RotationNow > 90 && road1RotationNow < 270;
+
+        if (isPointingLeftNow)
+        {
+            roadBasePosition.y += 0.5f;
+            roadBasePosition.x += 0.2f;
+
+        }
+        else
+        {
+            roadBasePosition.y += -0.5f;
+            roadBasePosition.x += 0.1f;
         }
 
+        while (!hitWall && isCollidingWithPlayer)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(roadBasePosition + (direction * length), direction, 0.1f, obstacleLayer);
+            if (hit.collider != null)
+            {
+                hitWall = true;
+                UpdateRoad1(Road1, Road1_1);
+                lastHitGlass = hit.collider.gameObject;
+            }
+            else
+            {
+                length += expandSpeed * Time.deltaTime;
+                road.transform.localScale = new Vector2(length, 0.05f);
+                road.transform.position = roadBasePosition + (direction * (length / 2));
+
+                yield return new WaitForSeconds(0.01f / expandSpeed);
+            }
+        }
     }
-    void ToggleColliders(bool state)
+
+    System.Collections.IEnumerator ExtendRoad2(GameObject road, Vector2 direction, float verticalOffset)
     {
-        // This method toggles the colliders for all roads
-        Road1.GetComponent<BoxCollider2D>().enabled = state;
-        Road2.GetComponent<BoxCollider2D>().enabled = state;
 
-        if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = state;
-        if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = state;
+        float length = 0;
+        bool hitWall = false;
+        Vector2 roadBasePosition = (Vector2)FlashLight.position - (Vector2)FlashLight.up * flashlightLength;
+
+        float road1RotationNow = Road1.transform.eulerAngles.z;
+        bool isPointingLeftNow = road1RotationNow > 90 && road1RotationNow < 270;
+
+        if (isPointingLeftNow)
+        {
+            roadBasePosition.y -= 0.5f;
+            roadBasePosition.x -= 0.2f;
+        }
+        else
+        {
+            roadBasePosition.y -= -0.5f;
+            roadBasePosition.x -= 0.2f;
+        }
+
+        while (!hitWall && isCollidingWithPlayer)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(roadBasePosition + (direction * length), direction, 0.1f, obstacleLayer);
+            //hits
+            if (hit.collider != null)
+            {
+                hitWall = true;
+                lastHitGlass = hit.collider.gameObject;
+                UpdateRoad2(Road2, Road2_1);
+            }
+            else
+            {
+                length += expandSpeed * Time.deltaTime; // Using expandSpeed to control the extension rate
+                road.transform.localScale = new Vector2(length, 0.05f);
+                road.transform.position = roadBasePosition + (direction * (length / 2));
+
+                yield return new WaitForSeconds(0.01f / expandSpeed);
+            }
+        }
     }
 
-    void ExpandR1(GameObject Road)
+    void UpdateRoad1(GameObject Road, GameObject NewRoad)
     {
         RaycastHit2D hit;
         Vector2 offset = (Vector2)FlashLight.transform.up * 0.4f; // 偏移量
@@ -164,7 +248,6 @@ public class newReflection : MonoBehaviour
         //如果R2先撞上了，更新R1和R1_1
         if (Colliding2 == true)
         {
-            Destroy(Road1_1);
             Road.transform.localScale = new Vector2(Road2.transform.localScale.x - 1.8f, 0.05f);
             Road.transform.position = new Vector2(Road2.transform.position.x, Road2.transform.position.y);
             Road.transform.position -= Road.transform.up * 1.0f;
@@ -215,11 +298,10 @@ public class newReflection : MonoBehaviour
             Road1_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation + 120f); //这个角度是相对x轴而言的角度
             Road1_1.transform.position += Road1_1.transform.right * 1.5f;
         }
+
     }
 
-
-
-    void ExpandR2(GameObject Road)
+    void UpdateRoad2(GameObject Road, GameObject NewRoad)
     {
         RaycastHit2D hit;
         Vector2 offset = (Vector2)FlashLight.transform.up * 0.4f; // 偏移量
@@ -256,7 +338,6 @@ public class newReflection : MonoBehaviour
         //R1先撞上了，更新R2和R2_1
         if (Colliding1 == true)
         {
-            Destroy(Road2_1);
             //更新R2  
             Road.transform.localScale = new Vector2(Road1.transform.localScale.x - 1.8f, 0.05f);
             Road.transform.position = new Vector2(Road1.transform.position.x, Road1.transform.position.y);
@@ -291,10 +372,6 @@ public class newReflection : MonoBehaviour
         //R2先撞了，生成R2_1
         else if (hit.collider != null)
         {
-            //输出碰撞对象的名称
-            Debug.Log(hit.collider.name);
-            //输出碰撞对象的tag
-            Debug.Log(hit.collider.tag);
             isColliding = true;
             Colliding2 = true;
             Destroy(Road2_1);
@@ -312,6 +389,71 @@ public class newReflection : MonoBehaviour
             // 将 Road2_1 的旋转角度设置为 Road 的旋转角度顺时针转 120度
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
             Road2_1.transform.position += Road2_1.transform.right * 1.5f;
+
+        }
+
+    }
+
+
+
+    void ShowRoad(bool visible)
+    {
+        if (Road1 != null)
+        {
+            Road1.SetActive(visible);
+            if (Road1_1 != null && !visible)
+            {
+                Destroy(Road1_1);
+                Road1_1 = null;
+            }
+        }
+
+        if (Road2 != null)
+        {
+            Road2.SetActive(visible);
+            if (Road2_1 != null && !visible)
+            {
+                Destroy(Road2_1);
+                Road2_1 = null;
+            }
+        }
+    }
+
+
+
+
+    void FixRoadsInPlace()
+    {
+        // Stop extending the roads if they are currently being extended
+        StopAllCoroutines();
+
+        // Enable colliders for all 4 roads
+        ToggleColliders(Road1, true);
+        if (Road1_1 != null) ToggleColliders(Road1_1, true);
+        ToggleColliders(Road2, true);
+        if (Road2_1 != null) ToggleColliders(Road2_1, true);
+
+        ShowRoad(true);
+    }
+
+    void ToggleColliders(GameObject road, bool state)
+    {
+        if (road != null)
+        {
+            BoxCollider2D collider = road.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                collider.enabled = state;
+            }
+        }
+    }
+
+    void SetGlassRigidbodyType(GameObject glass, RigidbodyType2D type)
+    {
+        Rigidbody2D rb = glass.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.bodyType = type;
         }
     }
 }
