@@ -13,6 +13,10 @@ public class Refraction3 : MonoBehaviour
     public bool isCollidingWithPlayer;
     public LayerMask obstacleLayer;
     public SpriteRenderer roadRenderer;
+    public SpriteRenderer roadRenderer1;
+    public SpriteRenderer roadRenderer2;
+    public SpriteRenderer roadRenderer1_1;
+    public SpriteRenderer roadRenderer2_1;
 
     private bool roadsAreFixed = false;
     private GameObject lastHitGlass = null;
@@ -38,7 +42,7 @@ public class Refraction3 : MonoBehaviour
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
-        roadRenderer.color = Color.yellow;
+        roadRenderer.color = Color.gray;
         
         Road.transform.position = FlashLight.position;     
         Road.transform.up = FlashLight.up;
@@ -49,25 +53,44 @@ public class Refraction3 : MonoBehaviour
         
     }
 
-void Update()
-{
-    if (isCollidingWithPlayer)
+    void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
+        if (isCollidingWithPlayer)
         {
-            roadsAreFixed = !roadsAreFixed;
-            ShowRoad(true);
-            FixRoadsInPlace();
-
-            if (roadsAreFixed && player.GetComponent<BatteryController>().batteryLevel > 0)
+            if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
             {
-                player.GetComponent<BatteryController>().batteryLevel--;
+                roadsAreFixed = !roadsAreFixed;
+                ShowRoad(true);
+                FixRoadsInPlace();
+                SwitchColor();
+
+                if (roadsAreFixed && player.GetComponent<BatteryController>().batteryLevel > 0)
+                {
+                    player.GetComponent<BatteryController>().batteryLevel--;
+                }
+            
             }
-        
         }
+
     }
 
-}
+    void SwitchColor()
+    {
+        if (roadsAreFixed)
+        {
+            roadRenderer1.color = Color.yellow;
+            roadRenderer2.color = Color.yellow;
+            if(Road1_1 != null) roadRenderer1_1.color = Color.yellow;
+            if(Road2_1 != null) roadRenderer2_1.color = Color.yellow;
+        }
+        else
+        {
+            roadRenderer1.color = Color.gray;
+            roadRenderer2.color = Color.gray;
+            if(Road1_1 != null) roadRenderer1_1.color = Color.gray;
+            if(Road2_1 != null) roadRenderer2_1.color = Color.gray;
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -97,16 +120,14 @@ void Update()
             }
         }
         if(!roadsAreFixed && lastHitGlass != null)
-    {
-        SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+        {
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Kinematic);
+        }
+        if(roadsAreFixed && lastHitGlass != null)
+        {
+            SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
+        }
     }
-    if(roadsAreFixed && lastHitGlass != null)
-    {
-        SetGlassRigidbodyType(lastHitGlass, RigidbodyType2D.Dynamic);
-    }
-    }
-
-
 
     void StartExtendingRoad1()
     {
@@ -262,10 +283,12 @@ void Update()
         road2_1Collider.enabled = false;
 
         //Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
-        if (!isPointingLeft2){
+        if (!isPointingLeft2)
+        {
             Road2_1.transform.localScale = new Vector2(3.2f, 0.05f); 
         }
-        else{
+        else
+        {
             Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
         }
 
@@ -279,11 +302,20 @@ void Update()
     }
 
 
-
 void ShowRoad(bool visible)
 {
     if (Road1 != null)
     {
+        if(roadsAreFixed)
+        {
+            roadRenderer1 = Road1.GetComponent<SpriteRenderer>();
+            roadRenderer1.color = Color.yellow;
+            if(Road1_1 != null) {
+                roadRenderer1_1 = Road1_1.GetComponent<SpriteRenderer>();
+                roadRenderer1_1.color = Color.yellow;
+            }
+
+        }
         Road1.SetActive(visible);
         if (Road1_1 != null && !visible)
         {
@@ -294,6 +326,15 @@ void ShowRoad(bool visible)
 
     if (Road2 != null)
     {
+        if(roadsAreFixed)
+        {
+            roadRenderer2 = Road2.GetComponent<SpriteRenderer>();
+            roadRenderer2.color = Color.yellow;
+            if(Road2_1 != null){
+                roadRenderer2_1 = Road2_1.GetComponent<SpriteRenderer>();
+                roadRenderer2_1.color = Color.yellow;
+            }
+        }
         Road2.SetActive(visible);
         if (Road2_1 != null && !visible)
         {
@@ -302,8 +343,6 @@ void ShowRoad(bool visible)
         }
     }
 }
-
-
 
 
 void FixRoadsInPlace()
