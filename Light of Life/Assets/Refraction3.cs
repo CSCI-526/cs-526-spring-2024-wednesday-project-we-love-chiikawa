@@ -111,7 +111,6 @@ public class Refraction3 : MonoBehaviour
         {
             isCollidingWithPlayer = false;
             if(!roadsAreFixed){
-
                 ShowRoad(false);
             }
             else{
@@ -243,7 +242,7 @@ public class Refraction3 : MonoBehaviour
 
         //Road1_1.transform.localScale = new Vector2(3.0f, 0.05f); 
         if (isPointingLeft){
-            Road1_1.transform.localScale = new Vector2(3.2f, 0.05f); 
+            Road1_1.transform.localScale = new Vector2(3.3f, 0.05f); 
         }
         else{
             Road1_1.transform.localScale = new Vector2(3.0f, 0.05f);
@@ -285,7 +284,7 @@ public class Refraction3 : MonoBehaviour
         //Road2_1.transform.localScale = new Vector2(3.0f, 0.05f); 
         if (!isPointingLeft2)
         {
-            Road2_1.transform.localScale = new Vector2(3.2f, 0.05f); 
+            Road2_1.transform.localScale = new Vector2(3.3f, 0.05f); 
         }
         else
         {
