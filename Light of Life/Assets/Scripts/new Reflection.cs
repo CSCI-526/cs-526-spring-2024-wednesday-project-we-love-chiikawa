@@ -18,7 +18,7 @@ public class newReflection : MonoBehaviour
     public GameObject player;
     public bool isCollidingWithPlayer;
     public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
-    public float expandSpeed = 10.0f;
+    public float expandSpeed = 5.0f;
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class newReflection : MonoBehaviour
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
-        roadRenderer.color = Color.yellow;
+        roadRenderer.color = Color.grey;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
 
         //方向,positon
@@ -102,12 +102,13 @@ public class newReflection : MonoBehaviour
             {
                 fixedRoads = !fixedRoads;
                 ToggleColliders(fixedRoads);
+                SwitchColor();
 
                 if (fixedRoads == true)
                 {
                     player.GetComponent<BatteryController>().batteryLevel--;
                     PlayerPrefs.SetInt("EnergyUsedCount", PlayerPrefs.GetInt("EnergyUsedCount", 0) + 1);
-                    //Debug.Log(PlayerPrefs.GetInt("EnergyUsedCount", 0));
+                    
                 }
             }
             if (fixedRoads==false)
@@ -126,6 +127,29 @@ public class newReflection : MonoBehaviour
 
         if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = state;
         if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = state;
+    }
+
+    void SwitchColor()
+    {
+        //Get road1 renderer and change its color to yellow
+        SpriteRenderer roadRenderer1 = Road1.GetComponent<SpriteRenderer>();
+        SpriteRenderer roadRenderer2 = Road2.GetComponent<SpriteRenderer>();
+        SpriteRenderer roadRenderer1_1 = Road1_1.GetComponent<SpriteRenderer>();
+        SpriteRenderer roadRenderer2_1 = Road2_1.GetComponent<SpriteRenderer>();
+        if (fixedRoads)
+        {
+            roadRenderer1.color = Color.yellow;
+            roadRenderer2.color = Color.yellow;
+            if (Road1_1 != null) roadRenderer1_1.color = Color.yellow;
+            if (Road2_1 != null) roadRenderer2_1.color = Color.yellow;
+        }
+        else
+        {
+            roadRenderer1.color = Color.gray;
+            roadRenderer2.color = Color.gray;
+            if (Road1_1 != null) roadRenderer1_1.color = Color.gray;
+            if (Road2_1 != null) roadRenderer2_1.color = Color.gray;
+        }
     }
 
     void ExpandR1(GameObject Road)
