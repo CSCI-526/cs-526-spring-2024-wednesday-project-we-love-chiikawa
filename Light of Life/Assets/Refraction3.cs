@@ -21,7 +21,7 @@ public class Refraction3 : MonoBehaviour
     private bool roadsAreFixed = false;
     private GameObject lastHitGlass = null;
     private bool roadsFixed = false;
-    public float expandSpeed = 10.0f;
+    private float expandSpeed = 5.0f;
 
     void Start()
     {
