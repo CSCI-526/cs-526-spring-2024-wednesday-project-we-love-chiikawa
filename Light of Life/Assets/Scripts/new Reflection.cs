@@ -19,6 +19,10 @@ public class newReflection : MonoBehaviour
     public bool isCollidingWithPlayer;
     public float maxChangePerFrame = 0.5f; // 每帧最大长度或位置变化
     public float expandSpeed = 5.0f;
+    public SpriteRenderer roadRenderer1;
+    public SpriteRenderer roadRenderer2;
+    public SpriteRenderer roadRenderer1_1;
+    public SpriteRenderer roadRenderer2_1;
 
     void Start()
     {
@@ -40,7 +44,7 @@ public class newReflection : MonoBehaviour
         roadRenderer = Road.AddComponent<SpriteRenderer>();
         Sprite defaultSprite = Resources.Load<Sprite>("Square");
         roadRenderer.sprite = defaultSprite;
-        roadRenderer.color = Color.grey;
+        roadRenderer.color = Color.gray;
         roadRenderer.sortingOrder = 1; //让道路渲染在障碍物的上面，不会被挡住
 
         //方向,positon
@@ -50,27 +54,17 @@ public class newReflection : MonoBehaviour
         roadCollider.size = new Vector2(1, 0.05f);
         roadCollider.enabled = false;
     }
-    
-    //碰到手电筒
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
-
-            Road1.GetComponent<BoxCollider2D>().enabled = true;
-            Road2.GetComponent<BoxCollider2D>().enabled = true;
-            if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = true;
-            if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = true; 
-
-            Road1.GetComponent<SpriteRenderer>().enabled = true;
-            Road2.GetComponent<SpriteRenderer>().enabled = true;
-            if (Road1_1) Road1_1.GetComponent<SpriteRenderer>().enabled = true;
-            if (Road2_1) Road2_1.GetComponent<SpriteRenderer>().enabled = true;
+            ShowRoad(true);
+            ShowRoad(true);
         }
     }
 
-    //离开手电筒
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -78,38 +72,33 @@ public class newReflection : MonoBehaviour
             isCollidingWithPlayer = false;
             if (fixedRoads==false)
             {
-                Road1.GetComponent<BoxCollider2D>().enabled = false;
-                Road2.GetComponent<BoxCollider2D>().enabled = false;
-                if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = false;
-                if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = false;
-
-                Road1.GetComponent<SpriteRenderer>().enabled = false;
-                Road2.GetComponent<SpriteRenderer>().enabled = false;
-                if (Road1_1) Road1_1.GetComponent<SpriteRenderer>().enabled = false;
-                if (Road2_1) Road2_1.GetComponent<SpriteRenderer>().enabled = false;
-            }           
+                ShowRoad(false);
+            }
+            else
+            {
+                ShowRoad(true);
+            }
         }
     }
 
+
     void Update()
     {
-        //如果player撞到Flashlight
         if (isCollidingWithPlayer)
         {
             if (Input.GetKeyDown(KeyCode.F) && player.GetComponent<BatteryController>().batteryLevel > 0)
             {
                 fixedRoads = !fixedRoads;
-                ToggleColliders(fixedRoads);
+                ShowRoad(true);
+                FixRoadsInPlace();
                 SwitchColor();
 
-                if (fixedRoads == true)
+                if (fixedRoads && player.GetComponent<BatteryController>().batteryLevel > 0)
                 {
                     player.GetComponent<BatteryController>().batteryLevel--;
-                    PlayerPrefs.SetInt("EnergyUsedCount", PlayerPrefs.GetInt("EnergyUsedCount", 0) + 1);
-                    
                 }
             }
-            if (fixedRoads==false)
+            if (fixedRoads == false)
             {
                 ExpandR1(Road1);
                 ExpandR2(Road2);
@@ -117,23 +106,21 @@ public class newReflection : MonoBehaviour
         }
 
     }
-    void ToggleColliders(bool state)
+   
+    void ToggleColliders(GameObject road, bool state)
     {
-        // This method toggles the colliders for all roads
-        Road1.GetComponent<BoxCollider2D>().enabled = state;
-        Road2.GetComponent<BoxCollider2D>().enabled = state;
-
-        if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = state;
-        if (Road2_1) Road2_1.GetComponent<BoxCollider2D>().enabled = state;
+        if (road != null)
+        {
+            BoxCollider2D collider = road.GetComponent<BoxCollider2D>();
+            if (collider != null)
+            {
+                collider.enabled = state;
+            }
+        }
     }
 
     void SwitchColor()
     {
-        //Get road1 renderer and change its color to yellow
-        SpriteRenderer roadRenderer1 = Road1.GetComponent<SpriteRenderer>();
-        SpriteRenderer roadRenderer2 = Road2.GetComponent<SpriteRenderer>();
-        SpriteRenderer roadRenderer1_1 = Road1_1.GetComponent<SpriteRenderer>();
-        SpriteRenderer roadRenderer2_1 = Road2_1.GetComponent<SpriteRenderer>();
         if (fixedRoads)
         {
             roadRenderer1.color = Color.yellow;
@@ -274,7 +261,6 @@ public class newReflection : MonoBehaviour
             Destroy(Road2_1);
         }
 
-
         //R1先撞上了，更新R2和R2_1
         if (Colliding1 == true)
         {
@@ -331,5 +317,56 @@ public class newReflection : MonoBehaviour
             Road2_1.transform.rotation = Quaternion.Euler(0, 0, roadRotation - 120f); //这个角度是相对x轴而言的角度
             Road2_1.transform.position += Road2_1.transform.right * 1.5f;
         }
+    }
+    void ShowRoad(bool visible)
+    {
+        if (Road1 != null)
+        {
+            if (fixedRoads)
+            {
+                roadRenderer1 = Road1.GetComponent<SpriteRenderer>();
+                roadRenderer1.color = Color.yellow;
+                if (Road1_1 != null)
+                {
+                    roadRenderer1_1 = Road1_1.GetComponent<SpriteRenderer>();
+                    roadRenderer1_1.color = Color.yellow;
+                }
+
+            }
+            Road1.SetActive(visible);
+            if (Road1_1 != null)
+                Road1_1.SetActive(visible);
+        }
+
+        if (Road2 != null)
+        {
+            if (fixedRoads)
+            {
+                roadRenderer2 = Road2.GetComponent<SpriteRenderer>();
+                roadRenderer2.color = Color.yellow;
+                if (Road2_1 != null)
+                {
+                    roadRenderer2_1 = Road2_1.GetComponent<SpriteRenderer>();
+                    roadRenderer2_1.color = Color.yellow;
+                }
+            }
+            Road2.SetActive(visible);
+            if (Road2_1 != null)
+                Road2_1.SetActive(visible);
+        }
+    }
+
+    void FixRoadsInPlace()
+    {
+        // Stop extending the roads if they are currently being extended
+        StopAllCoroutines();
+
+        // Enable colliders for all 4 roads
+        ToggleColliders(Road1, true);
+        if (Road1_1 != null) ToggleColliders(Road1_1, true);
+        ToggleColliders(Road2, true);
+        if (Road2_1 != null) ToggleColliders(Road2_1, true);
+
+        ShowRoad(true);
     }
 }
