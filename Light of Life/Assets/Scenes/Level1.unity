@@ -1161,7 +1161,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   roadRenderer: {fileID: 0}
-  expandSpeed: 10
+  roadRenderer1: {fileID: 0}
+  roadRenderer2: {fileID: 0}
+  roadRenderer1_1: {fileID: 0}
+  roadRenderer2_1: {fileID: 0}
 --- !u!1 &235046638
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2272,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   roadRenderer: {fileID: 0}
-  expandSpeed: 10
+  roadRenderer1: {fileID: 0}
+  roadRenderer2: {fileID: 0}
+  roadRenderer1_1: {fileID: 0}
+  roadRenderer2_1: {fileID: 0}
 --- !u!1 &522493433
 GameObject:
   m_ObjectHideFlags: 0
@@ -6720,7 +6726,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   roadRenderer: {fileID: 0}
-  expandSpeed: 10
+  roadRenderer1: {fileID: 0}
+  roadRenderer2: {fileID: 0}
+  roadRenderer1_1: {fileID: 0}
+  roadRenderer2_1: {fileID: 0}
 --- !u!1 &1340540236
 GameObject:
   m_ObjectHideFlags: 0
