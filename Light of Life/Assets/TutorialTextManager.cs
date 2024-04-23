@@ -1,13 +1,5 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.Analytics;
-using System.Collections.Generic;
-using Unity.Services.Analytics;
-using Unity.Services.Core;
-using System.Threading.Tasks;
-using System;
-using UnityEngine.SceneManagement;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class TutorialTextManager : MonoBehaviour
 {
