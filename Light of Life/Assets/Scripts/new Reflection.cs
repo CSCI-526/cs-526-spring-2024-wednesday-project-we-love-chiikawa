@@ -75,10 +75,9 @@ public class newReflection : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if(fixedRoads==false)
+            isCollidingWithPlayer = false;
+            if (fixedRoads==false)
             {
-                isCollidingWithPlayer = false;
-
                 Road1.GetComponent<BoxCollider2D>().enabled = false;
                 Road2.GetComponent<BoxCollider2D>().enabled = false;
                 if (Road1_1) Road1_1.GetComponent<BoxCollider2D>().enabled = false;
@@ -88,8 +87,7 @@ public class newReflection : MonoBehaviour
                 Road2.GetComponent<SpriteRenderer>().enabled = false;
                 if (Road1_1) Road1_1.GetComponent<SpriteRenderer>().enabled = false;
                 if (Road2_1) Road2_1.GetComponent<SpriteRenderer>().enabled = false;
-            }
-            
+            }           
         }
     }
 
@@ -315,10 +313,6 @@ public class newReflection : MonoBehaviour
         //R2先撞了，生成R2_1
         else if (hit.collider != null)
         {
-            //输出碰撞对象的名称
-            Debug.Log(hit.collider.name);
-            //输出碰撞对象的tag
-            Debug.Log(hit.collider.tag);
             isColliding = true;
             Colliding2 = true;
             Destroy(Road2_1);
